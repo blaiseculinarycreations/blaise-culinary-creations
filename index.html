@@ -686,7 +686,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     window.addEventListener('message', function (e) {
       var d = e.data;
       if (!d || typeof d !== 'object' || !d.type) return;
-      if (!/(^|\.)fash\.com(:\d+)?$/.test(new URL(e.origin).host)) return;
+      var host = ''; try { host = new URL(e.origin).host; } catch (err) { return; }
+      if (!/(^|\.)fash\.com(:\d+)?$/.test(host)) return;
       if (d.type === 'modalState') dock.classList.toggle('is-open', !!d.isOpen);
       if (d.type === 'resize' && d.height) dock.classList.toggle('is-open', d.height > 120);
     });
