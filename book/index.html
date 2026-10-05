@@ -63,7 +63,11 @@
         <div class="field"><label for="f-date">Date</label><input id="f-date" name="date" type="date"></div>
         <div class="field"><label for="f-guests">Guests</label><input id="f-guests" name="guests" type="number" min="1" inputmode="numeric" placeholder="6"></div>
         <div class="field full"><label for="f-city">City</label><input id="f-city" name="city" placeholder="Dacula, Buford, Lawrenceville…"></div>
-        <div class="field full"><label for="f-notes">Occasion, allergies, anything else</label><textarea id="f-notes" name="notes" placeholder="Anniversary dinner, one guest is pescatarian, we love Japanese food."></textarea></div>
+        <fieldset class="field full callopt"><legend class="label">Want to talk it over first?</legend>
+<div class="seg"><input type="radio" id="c-no" name="call" value="No call needed" checked><label for="c-no">No, just reply</label><input type="radio" id="c-phone" name="call" value="Phone call"><label for="c-phone">Phone call</label><input type="radio" id="c-meet" name="call" value="Google Meet video call"><label for="c-meet">Google Meet video</label></div></fieldset>
+<div class="field call-when" id="callWhen"><label for="f-calldate">Best day for a call</label><input id="f-calldate" name="call_date" type="date"></div>
+<div class="field call-when" id="callTime"><label for="f-calltime">Best time</label><select id="f-calltime" name="call_time"><option>Morning (9am to noon)</option><option>Afternoon (noon to 5pm)</option><option>Evening (5pm to 8pm)</option></select></div>
+<div class="field full"><label for="f-notes">Occasion, allergies, anything else</label><textarea id="f-notes" name="notes" placeholder="Anniversary dinner, one guest is pescatarian, we love Japanese food."></textarea></div>
         <div class="preview" id="previewWrap">
           <label for="msg">Your message</label>
           <pre id="msg" tabindex="0"></pre>

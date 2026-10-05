@@ -46,6 +46,8 @@
       if (g('f-date')) lines.push('Date: ' + fmtDate(g('f-date')));
       if (g('f-guests')) lines.push('Guests: ' + g('f-guests'));
       if (g('f-city')) lines.push('City: ' + g('f-city'));
+      var call = form.querySelector('input[name=call]:checked');
+      if (call && call.id !== 'c-no') lines.push('I\'d like a ' + call.value.toLowerCase() + (g('f-calldate') ? ' on ' + fmtDate(g('f-calldate')) : '') + (g('f-calltime') ? ', ' + g('f-calltime').toLowerCase() : '') + '.');
       if (g('f-notes')) lines.push('Notes: ' + g('f-notes'));
       return lines.join('\n');
     };
@@ -61,6 +63,11 @@
       if (o) { svc.value = o.value; refresh(); }
       if (scroll) { form.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function () { svc.focus({ preventScroll: true }); }, 400); }
     };
+    var callToggle = function () {
+      var c = form.querySelector('input[name=call]:checked'); var want = c && c.id !== 'c-no';
+      ['callWhen', 'callTime'].forEach(function (id) { var el = $(id); if (el) el.hidden = !want; });
+    };
+    form.addEventListener('change', callToggle); callToggle();
     form.addEventListener('input', refresh);
     form.addEventListener('change', refresh);
     try { pick(new URLSearchParams(location.search).get('s'), false); } catch (e) {}
@@ -75,7 +82,7 @@
       sendBtn.disabled = true; status.textContent = 'Sending…';
       post(form).then(function () {
         status.textContent = 'Thank you! Your request was sent. I\'ll be in touch within a day.';
-        form.reset(); refresh();
+        form.reset(); callToggle(); refresh();
       }).catch(function () {
         copy(build(), msg, 'That didn\'t go through, so I copied your message. Text it to (631) 710-1226 or email blaiseculinarycreations@gmail.com.', status);
       }).then(function () { sendBtn.disabled = false; });
