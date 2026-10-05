@@ -46,6 +46,8 @@
       if (g('f-date')) lines.push('Date: ' + fmtDate(g('f-date')));
       if (g('f-guests')) lines.push('Guests: ' + g('f-guests'));
       if (g('f-city')) lines.push('City: ' + g('f-city'));
+      var pt = +g('f-pretaste') || 0;
+      if (pt) lines.push('Pre-tastings: ' + pt + ' (+$' + (pt * 50) + ')');
       var call = form.querySelector('input[name=call]:checked');
       if (call && call.id !== 'c-no') lines.push('I\'d like a ' + call.value.toLowerCase() + (g('f-calldate') ? ' on ' + fmtDate(g('f-calldate')) : '') + (g('f-calltime') ? ', ' + g('f-calltime').toLowerCase() : '') + '.');
       if (g('f-notes')) lines.push('Notes: ' + g('f-notes'));
@@ -71,6 +73,7 @@
     var adultToggle = function () {
       var o = svc && svc.selectedOptions && svc.selectedOptions[0]; var need = !!(o && o.getAttribute('data-adult'));
       var w = $('adultWrap'); if (w) w.hidden = !need;
+      var dw = $('depWrap'); if (dw) dw.hidden = !!(o && /\| Free$/.test(o.value));
       return need;
     };
     if (svc) svc.addEventListener('change', adultToggle);
@@ -86,6 +89,8 @@
       e.preventDefault();
       if (!g('f-name')) { status.textContent = 'Please add your name.'; $('f-name').focus(); return; }
       if (!g('f-phone') && !g('f-email')) { status.textContent = 'Please add a phone number or email so I can reply.'; $('f-phone').focus(); return; }
+      var free = /\| Free$/.test(g('f-service'));
+      if (!free && $('f-deposit') && !$('f-deposit').checked) { status.textContent = 'Please confirm you understand the 50% non-refundable deposit.'; $('f-deposit').focus(); return; }
       if (adultToggle() && !$('f-adult').checked) { status.textContent = 'Please confirm everyone served wine is 21 or older.'; $('f-adult').focus(); return; }
       sendBtn.disabled = true; status.textContent = 'Sending…';
       post(form).then(function () {
