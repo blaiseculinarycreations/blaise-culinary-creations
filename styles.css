@@ -262,3 +262,10 @@ section.first-tight { border-top: 0; padding-block: 24px clamp(48px, 8vw, 88px);
 .seg input:checked + label { border-color: var(--silver-hi); color: var(--metal); background: var(--silver); }
 .seg input:focus-visible + label { outline: 1px solid var(--silver-hi); outline-offset: 3px; }
 .call-when[hidden] { display: none; }
+
+/* service details */
+.incl { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: .9rem; color: var(--silver); }
+.incl li { padding-left: 16px; position: relative; }
+.incl li::before { content: ""; position: absolute; left: 0; top: .72em; width: 7px; height: 1px; background: var(--silver-lo); }
+.pnote { font-size: .85rem; color: var(--silver-lo); }
+.age { display: inline-block; margin-left: 10px; vertical-align: 4px; font-family: var(--body); font-size: .7rem; font-weight: 700; letter-spacing: .1em; color: var(--metal); background: var(--silver); padding: 2px 6px; border-radius: 2px; }

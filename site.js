@@ -60,7 +60,7 @@
     var pick = function (sid, scroll) {
       if (!svc || !sid) return;
       var o = svc.querySelector('option[data-s="' + sid + '"]');
-      if (o) { svc.value = o.value; refresh(); }
+      if (o) { svc.value = o.value; refresh(); if (typeof adultToggle === 'function') adultToggle(); }
       if (scroll) { form.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function () { svc.focus({ preventScroll: true }); }, 400); }
     };
     var callToggle = function () {
@@ -68,9 +68,16 @@
       ['callWhen', 'callTime'].forEach(function (id) { var el = $(id); if (el) el.hidden = !want; });
     };
     form.addEventListener('change', callToggle); callToggle();
+    var adultToggle = function () {
+      var o = svc && svc.selectedOptions && svc.selectedOptions[0]; var need = !!(o && o.getAttribute('data-adult'));
+      var w = $('adultWrap'); if (w) w.hidden = !need;
+      return need;
+    };
+    if (svc) svc.addEventListener('change', adultToggle);
     form.addEventListener('input', refresh);
     form.addEventListener('change', refresh);
     try { pick(new URLSearchParams(location.search).get('s'), false); } catch (e) {}
+    adultToggle();
     refresh();
     document.addEventListener('click', function (e) {
       var b = e.target.closest('[data-pick]'); if (b) pick(b.getAttribute('data-pick'), true);
@@ -79,10 +86,11 @@
       e.preventDefault();
       if (!g('f-name')) { status.textContent = 'Please add your name.'; $('f-name').focus(); return; }
       if (!g('f-phone') && !g('f-email')) { status.textContent = 'Please add a phone number or email so I can reply.'; $('f-phone').focus(); return; }
+      if (adultToggle() && !$('f-adult').checked) { status.textContent = 'Please confirm everyone served wine is 21 or older.'; $('f-adult').focus(); return; }
       sendBtn.disabled = true; status.textContent = 'Sending…';
       post(form).then(function () {
         status.textContent = 'Thank you! Your request was sent. I\'ll be in touch within a day.';
-        form.reset(); callToggle(); refresh();
+        form.reset(); callToggle(); adultToggle(); refresh();
       }).catch(function () {
         copy(build(), msg, 'That didn\'t go through, so I copied your message. Text it to (631) 710-1226 or email blaiseculinarycreations@gmail.com.', status);
       }).then(function () { sendBtn.disabled = false; });
