@@ -62,7 +62,7 @@
     var pick = function (sid, scroll) {
       if (!svc || !sid) return;
       var o = svc.querySelector('option[data-s="' + sid + '"]');
-      if (o) { svc.value = o.value; refresh(); if (typeof adultToggle === 'function') adultToggle(); }
+      if (o) { svc.value = o.value; refresh(); if (typeof adultToggle === 'function') adultToggle(); if (typeof checkDate === 'function') checkDate(); }
       if (scroll) { form.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function () { svc.focus({ preventScroll: true }); }, 400); }
     };
     var callToggle = function () {
@@ -77,10 +77,32 @@
       return need;
     };
     if (svc) svc.addEventListener('change', adultToggle);
+    // ---- date rules: no past dates, two weeks' notice for dinners, booked/blocked days ----
+    var dateEl = $('f-date'), dateMsg = $('dateMsg'), depNote = $('depNote'), taken = {};
+    var iso = function (d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+    var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+    if (dateEl) dateEl.min = iso(tomorrow);
+    fetch('/availability.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : {}; }).then(function (a) { (a && a.unavailable || []).forEach(function (d) { taken[d] = 1; }); checkDate(); }).catch(function () {});
+    var selOpt = function () { return svc && svc.selectedOptions && svc.selectedOptions[0]; };
+    var checkDate = function () {
+      var o = selOpt(), v = dateEl ? dateEl.value : '', msg = '', bad = false;
+      var dep = o ? +o.getAttribute('data-dep') || 0 : 0;
+      if (depNote) depNote.textContent = dep ? 'This service takes a ' + dep + '% deposit to hold the date, refundable in full up to 14 days before.' : '';
+      if (v) {
+        var days = Math.round((new Date(v + 'T12:00:00') - new Date(iso(new Date()) + 'T12:00:00')) / 86400000);
+        if (days < 1) { msg = 'Please pick a future date.'; bad = true; }
+        else if (taken[v]) { msg = 'That date is already booked. Please pick another.'; bad = true; }
+        else if (o && o.getAttribute('data-dinner') && days < 14) msg = 'Dinners need about two weeks to plan. Send it anyway and I\'ll tell you if I can make it work.';
+      }
+      if (dateMsg) { dateMsg.textContent = msg; dateMsg.classList.toggle('bad', bad); }
+      return !bad;
+    };
+    if (dateEl) dateEl.addEventListener('change', checkDate);
+    if (svc) svc.addEventListener('change', checkDate);
     form.addEventListener('input', refresh);
     form.addEventListener('change', refresh);
     try { pick(new URLSearchParams(location.search).get('s'), false); } catch (e) {}
-    adultToggle();
+    adultToggle(); checkDate();
     refresh();
     document.addEventListener('click', function (e) {
       var b = e.target.closest('[data-pick]'); if (b) pick(b.getAttribute('data-pick'), true);
@@ -91,11 +113,13 @@
       if (!g('f-phone') && !g('f-email')) { status.textContent = 'Please add a phone number or email so I can reply.'; $('f-phone').focus(); return; }
       var free = /\| Free$/.test(g('f-service'));
       if (!free && $('f-deposit') && !$('f-deposit').checked) { status.textContent = 'Please confirm you understand the 50% non-refundable deposit.'; $('f-deposit').focus(); return; }
+      if (!checkDate()) { status.textContent = dateMsg.textContent; dateEl.focus(); return; }
+      if ($('f-agree') && !$('f-agree').checked) { status.textContent = 'Please confirm you\'ve read the booking terms.'; $('f-agree').focus(); return; }
       if (adultToggle() && !$('f-adult').checked) { status.textContent = 'Please confirm everyone served wine is 21 or older.'; $('f-adult').focus(); return; }
       sendBtn.disabled = true; status.textContent = 'Sending…';
       post(form).then(function () {
         status.textContent = 'Thank you! Your request was sent. I\'ll be in touch within a day.';
-        form.reset(); callToggle(); adultToggle(); refresh();
+        form.reset(); callToggle(); adultToggle(); checkDate(); refresh();
       }).catch(function () {
         copy(build(), msg, 'That didn\'t go through, so I copied your message. Text it to (631) 710-1226 or email blaiseculinarycreations@gmail.com.', status);
       }).then(function () { sendBtn.disabled = false; });
