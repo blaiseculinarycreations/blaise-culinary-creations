@@ -283,3 +283,7 @@ section.first-tight { border-top: 0; padding-block: 24px clamp(48px, 8vw, 88px);
 .date-msg.bad { color: #e9a19a; }
 #depNote:empty { display: none; }
 #depNote { color: var(--silver-lo); }
+
+/* external review links */
+.ext-reviews { display: flex; flex-wrap: wrap; gap: 10px; }
+.ext-reviews a[hidden], [data-link-wrap][hidden] { display: none; }

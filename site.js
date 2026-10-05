@@ -177,9 +177,23 @@
     });
   }
 
+  // Google / Yelp links from links.json (data branch): unhide only when a URL is set
+  getJSON('links.json').then(function (L) {
+    if (!L) return;
+    document.querySelectorAll('[data-link]').forEach(function (a) {
+      var u = L[a.getAttribute('data-link')];
+      if (u && /^https:\/\//.test(u)) { a.href = u; a.hidden = false; }
+    });
+    document.querySelectorAll('[data-link-wrap]').forEach(function (w) {
+      var u = L[w.getAttribute('data-link-wrap')];
+      if (u && /^https:\/\//.test(u)) w.hidden = false;
+    });
+  });
+
   // ---------- published reviews ----------
   var lists = document.querySelectorAll('[data-reviews]');
   if (lists.length) {
+
     getJSON('reviews.json').then(function (rows) {
       if (!Array.isArray(rows) || !rows.length) return;
       rows.sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); });
