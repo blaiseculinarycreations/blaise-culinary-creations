@@ -193,6 +193,15 @@ input::placeholder, textarea::placeholder { color: #5d5e62; }
 .preview pre { margin: 0; white-space: pre-wrap; word-break: break-word; font: 400 .875rem/1.55 var(--body); color: var(--silver); background: var(--metal); border: 1px dashed var(--line); padding: 14px; }
 .status { font-size: .875rem; color: var(--silver-hi); min-height: 1.4em; }
 
+/* Fash widget, docked inside the booking form instead of floating */
+.fash-dock { grid-column: 1 / -1; display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 18px; }
+.fash-dock p { font-size: .875rem; color: var(--silver-lo); }
+.fash-dock:not(:has(iframe)) { display: none; }
+#fash-widget:not(.is-open) {
+  position: relative !important; inset: auto !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important;
+  width: 100% !important; max-width: 600px; height: 70px !important; z-index: auto !important; pointer-events: auto !important;
+}
+#fash-widget:not(.is-open) iframe { width: 100% !important; height: 100% !important; }
 footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: var(--step--1); color: var(--silver-lo); letter-spacing: .06em; }
 
@@ -541,6 +550,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <a class="btn btn-ghost" id="mailLink" href="mailto:blaiseculinarycreations@gmail.com">Open in Email</a>
         </div>
         <p class="status" id="status" role="status" aria-live="polite"></p>
+        <div class="fash-dock">
+          <p>Prefer to book through Fash? Start your request here.</p>
+          <div id="fash-widget"></div>
+        </div>
       </form>
     </div>
   </section>
@@ -659,14 +672,25 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 })();
 </script>
 
-<!-- Liaison Widget (Fash): lets visitors reach me through Fash -->
+<!-- Liaison Widget (Fash), docked in the booking form. It sits inline until the visitor opens it,
+     then Fash's own pop-up takes over the screen as designed. -->
 <script src="https://cdn.fash.com/widget-loader.js"></script>
 <script>
-  if (window.LiaisonWidget) {
+  (function () {
+    if (!window.LiaisonWidget) return;
     LiaisonWidget.init({
-      providerId: '6ac31a8c396283808cdf9cd2'
+      providerId: '6ac31a8c396283808cdf9cd2',
+      container: 'fash-widget'
     });
-  }
+    var dock = document.getElementById('fash-widget');
+    window.addEventListener('message', function (e) {
+      var d = e.data;
+      if (!d || typeof d !== 'object' || !d.type) return;
+      if (!/(^|\.)fash\.com(:\d+)?$/.test(new URL(e.origin).host)) return;
+      if (d.type === 'modalState') dock.classList.toggle('is-open', !!d.isOpen);
+      if (d.type === 'resize' && d.height) dock.classList.toggle('is-open', d.height > 120);
+    });
+  })();
 </script>
 
 </body></html>
