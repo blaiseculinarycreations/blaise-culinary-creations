@@ -87,7 +87,7 @@
     var checkDate = function () {
       var o = selOpt(), v = dateEl ? dateEl.value : '', msg = '', bad = false;
       var dep = o ? +o.getAttribute('data-dep') || 0 : 0;
-      if (depNote) depNote.textContent = dep ? 'This service takes a ' + dep + '% deposit to hold the date, refundable in full up to 14 days before.' : '';
+      if (depNote) depNote.textContent = dep ? 'This service takes a ' + dep + '% deposit to hold the date (refundable in full up to 14 days before). The balance and a grocery estimate are due 4 days before.' : '';
       if (v) {
         var days = Math.round((new Date(v + 'T12:00:00') - new Date(iso(new Date()) + 'T12:00:00')) / 86400000);
         if (days < 1) { msg = 'Please pick a future date.'; bad = true; }
