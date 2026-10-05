@@ -1,5 +1,11 @@
 (function () {
   'use strict';
+  // Reviews and booked dates live on the repo's `data` branch, so updating them never costs a Netlify deploy.
+  var DATA = 'https://raw.githubusercontent.com/blaiseculinarycreations/blaise-culinary-creations/data/';
+  var getJSON = function (name) {
+    return fetch(DATA + name, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .catch(function () { return fetch('/' + name, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }); });
+  };
   var $ = function (id) { return document.getElementById(id); };
 
   // ---------- mobile nav ----------
@@ -82,7 +88,7 @@
     var iso = function (d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
     var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
     if (dateEl) dateEl.min = iso(tomorrow);
-    fetch('/availability.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : {}; }).then(function (a) { (a && a.unavailable || []).forEach(function (d) { taken[d] = 1; }); checkDate(); }).catch(function () {});
+    getJSON('availability.json').then(function (a) { (a && a.unavailable || []).forEach(function (d) { taken[d] = 1; }); checkDate(); }).catch(function () {});
     var selOpt = function () { return svc && svc.selectedOptions && svc.selectedOptions[0]; };
     var checkDate = function () {
       var o = selOpt(), v = dateEl ? dateEl.value : '', msg = '', bad = false;
@@ -174,7 +180,7 @@
   // ---------- published reviews ----------
   var lists = document.querySelectorAll('[data-reviews]');
   if (lists.length) {
-    fetch('/reviews.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : []; }).then(function (rows) {
+    getJSON('reviews.json').then(function (rows) {
       if (!Array.isArray(rows) || !rows.length) return;
       rows.sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); });
       lists.forEach(function (list) {
