@@ -1,0 +1,672 @@
+<!doctype html><html><head><meta charset=utf-8><title>Blaise Culinary Creations | Personal Chef in Dacula &amp; Metro Atlanta</title><meta name="description" content="Personal chef in Dacula, GA serving metro Atlanta: story-driven tasting dinners, meal prep and cooking lessons."><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Archivo:wght@400;500;700&display=swap">
+<style>
+/* Layout: one narrow engraved column on matte black metal, like the card itself; silver is the only color. */
+:root {
+  --metal: #0d0d0e;          /* matte black plate */
+  --metal-2: #151517;        /* slightly raised panel */
+  --silver: #c9cacc;         /* engraved silver */
+  --silver-hi: #f1f1f2;      /* catch-light on the engraving */
+  --silver-lo: #8a8b8f;      /* silver in shadow, secondary text */
+  --line: #2a2a2d;           /* hairline engraving */
+  --display: "Cormorant Garamond", "Times New Roman", Times, serif;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.75rem;
+  --step-3: 2.5rem;
+  --step-4: clamp(2.25rem, 7vw, 4.25rem);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--metal);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  color: var(--silver);
+  font-family: var(--body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--silver-hi); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 1px solid var(--silver-hi); outline-offset: 3px;
+}
+.wrap { width: 100%; max-width: 68rem; margin-inline: auto; padding-inline: 20px; }
+
+/* ---------- header ---------- */
+header.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: color-mix(in srgb, var(--metal) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--silver-hi); }
+.brand svg { width: 28px; height: 28px; flex: none; }
+.brand span { font-family: var(--display); font-weight: 600; letter-spacing: .08em; font-size: 1.05rem; text-transform: uppercase; white-space: nowrap; }
+nav { display: flex; gap: 22px; }
+nav a { color: var(--silver-lo); text-decoration: none; font-size: var(--step--1); letter-spacing: .14em; text-transform: uppercase; font-weight: 500; }
+nav a:hover { color: var(--silver-hi); }
+@media (max-width: 640px) { nav a:not(.nav-book) { display: none; } .brand span { font-size: .9rem; } }
+
+/* ---------- shared ---------- */
+.engraved {
+  background: linear-gradient(176deg, var(--silver-hi) 0%, var(--silver) 38%, var(--silver-lo) 62%, var(--silver) 80%, var(--silver-hi) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.eyebrow { font-size: var(--step--1); letter-spacing: .22em; text-transform: uppercase; color: var(--silver-lo); font-weight: 500; margin: 0; }
+h2 { font-family: var(--display); font-weight: 500; font-size: var(--step-3); line-height: 1.1; margin: 0; color: var(--silver-hi); text-wrap: balance; }
+h3 { font-family: var(--display); font-weight: 600; font-size: var(--step-2); line-height: 1.15; margin: 0; color: var(--silver-hi); text-wrap: balance; }
+p { margin: 0; max-width: 62ch; }
+section { padding-block: clamp(64px, 10vw, 112px); border-top: 1px solid var(--line); }
+.section-head { display: grid; gap: 14px; margin-bottom: 48px; max-width: 46rem; }
+.lede { color: var(--silver); font-size: 1.0625rem; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font: 500 var(--step--1)/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
+  padding: 16px 26px; border-radius: 2px; text-decoration: none; cursor: pointer;
+  border: 1px solid var(--silver); transition: background .2s, color .2s, border-color .2s;
+}
+.btn-solid { background: var(--silver); color: var(--metal); }
+.btn-solid:hover { background: var(--silver-hi); border-color: var(--silver-hi); }
+.btn-ghost { background: transparent; color: var(--silver-hi); }
+.btn-ghost:hover { background: var(--metal-2); }
+
+/* ---------- hero ---------- */
+.hero { border-top: 0; padding-block: clamp(56px, 9vw, 104px) clamp(64px, 10vw, 112px); text-align: center; }
+.hero .wrap { display: grid; justify-items: center; gap: 26px; }
+.mark { width: min(260px, 62vw); height: auto; overflow: visible; }
+.mark .lid { transform-origin: 50% 100%; animation: lift 1.6s cubic-bezier(.2,.7,.2,1) .3s both; }
+.mark .q { animation: reveal 1.2s ease .9s both; }
+@keyframes lift { from { transform: translateY(14px); } to { transform: translateY(0); } }
+@keyframes reveal { from { opacity: .25; } to { opacity: 1; } }
+.wordmark { font-family: var(--display); font-weight: 600; font-size: var(--step-4); letter-spacing: .06em; line-height: 1; margin: 0; text-transform: uppercase; text-wrap: balance; }
+.byline { font-size: var(--step--1); letter-spacing: .3em; text-transform: uppercase; color: var(--silver); font-weight: 700; }
+.byline i { font-style: normal; color: var(--silver-lo); font-weight: 400; padding-inline: 8px; }
+.thesis { font-family: var(--display); font-style: italic; font-size: clamp(1.35rem, 3vw, 1.75rem); color: var(--silver-hi); max-width: 34ch; line-height: 1.35; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 6px; }
+.area { font-size: var(--step--1); color: var(--silver-lo); letter-spacing: .06em; }
+
+/* ---------- services ---------- */
+.services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.service { padding: 36px 28px 40px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.service + .service { border-left: 1px solid var(--line); }
+.service .tag { font-size: var(--step--1); letter-spacing: .18em; text-transform: uppercase; color: var(--silver-lo); }
+.service.feature { background: var(--metal-2); }
+.service ul { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .9375rem; }
+.service li { padding-left: 18px; position: relative; }
+.service li::before { content: ""; position: absolute; left: 0; top: .78em; width: 8px; height: 1px; background: var(--silver-lo); }
+@media (max-width: 860px) {
+  .services { grid-template-columns: 1fr; }
+  .service + .service { border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* ---------- menus ---------- */
+.menus { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 860px) { .menus { grid-template-columns: 1fr; } }
+.menu-card {
+  border: 1px solid var(--line); background: var(--metal-2); padding: 32px 28px 34px;
+  display: grid; gap: 16px; align-content: start; min-width: 0; position: relative;
+}
+.menu-card::after { content: ""; position: absolute; inset: 6px; border: 1px solid var(--line); pointer-events: none; }
+.menu-card .meta { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: var(--step--1); letter-spacing: .14em; text-transform: uppercase; color: var(--silver-lo); }
+.menu-card h3 { font-style: italic; font-weight: 500; }
+.courses { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 12px; counter-reset: c; }
+.courses li { display: grid; grid-template-columns: 2.2rem 1fr; gap: 8px; counter-increment: c; font-size: .9375rem; line-height: 1.5; }
+.courses li::before { content: counter(c, upper-roman); font-family: var(--display); font-size: 1.05rem; color: var(--silver-lo); line-height: 1.4; }
+.courses b { color: var(--silver-hi); font-weight: 500; }
+.menu-note { font-size: .9375rem; color: var(--silver); }
+.menu-note em { font-family: var(--display); font-size: 1.15rem; color: var(--silver-hi); }
+.ig { display: inline-flex; align-items: center; gap: 8px; color: var(--silver-hi); text-decoration: none; font-size: var(--step--1); letter-spacing: .12em; text-transform: uppercase; font-weight: 500; }
+.ig:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ig svg { width: 18px; height: 18px; flex: none; }
+.valse { align-content: center; }
+.cover { display: grid; justify-items: center; gap: 22px; text-align: center; padding-block: 24px; }
+.cover-cloche { width: min(220px, 60%); height: auto; overflow: visible; }
+.cover-lid { transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .7s ease; transform-box: fill-box; transform-origin: 80% 100%; }
+.cover:hover .cover-lid { transform: translateY(-5px) rotate(-3deg); }
+.cover.lifting .cover-lid { transform: translate(30px, -70px) rotate(14deg); opacity: 0; }
+.cover h3 { font-style: italic; font-weight: 500; font-size: var(--step-3); }
+.valse-body { display: grid; gap: 16px; animation: rise .6s ease both; }
+.valse-body .email { color: var(--silver-hi); font-size: 1rem; letter-spacing: .02em; user-select: all; word-break: break-all; }
+.copy-btn { justify-self: start; margin-top: 4px; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cover-lid, .valse-body { transition: none; animation: none; } }
+.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.plate { margin: 0; display: grid; gap: 10px; min-width: 0; }
+.plate-frame { aspect-ratio: 4 / 5; max-width: 100%; border: 1px solid var(--line); background: var(--metal-2); display: grid; place-items: center; color: var(--line); overflow: hidden; }
+.plate-frame svg { width: 38%; height: auto; }
+.plate-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.plate figcaption { font-size: var(--step--1); letter-spacing: .14em; text-transform: uppercase; color: var(--silver-lo); }
+.menus-foot { margin-top: 28px; font-size: .9375rem; color: var(--silver-lo); }
+
+/* ---------- process ---------- */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+@media (max-width: 860px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+.steps li { display: grid; gap: 10px; align-content: start; border-top: 1px solid var(--silver-lo); padding-top: 16px; min-width: 0; }
+.steps .n { font-family: var(--display); font-size: 1.6rem; color: var(--silver-hi); line-height: 1; }
+.steps h4 { margin: 0; font-size: var(--step--1); letter-spacing: .16em; text-transform: uppercase; color: var(--silver-hi); font-weight: 700; }
+.steps p { font-size: .9375rem; }
+
+/* ---------- about ---------- */
+.about-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+@media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; gap: 36px; } }
+.about-grid .copy { display: grid; gap: 18px; }
+.creds { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.creds div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 16px; padding-block: 14px; border-bottom: 1px solid var(--line); }
+.creds dt { font-size: var(--step--1); letter-spacing: .14em; text-transform: uppercase; color: var(--silver-lo); padding-top: 2px; }
+.creds dd { margin: 0; color: var(--silver-hi); font-size: .9375rem; }
+
+/* ---------- book ---------- */
+.book-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 56px; align-items: start; }
+@media (max-width: 860px) { .book-grid { grid-template-columns: 1fr; gap: 40px; } }
+.contact { display: grid; gap: 22px; }
+.fork { width: 100%; max-width: 200px; height: auto; display: block; }
+.phone-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.phone { font-family: var(--body); font-weight: 700; font-size: 1.5rem; letter-spacing: .04em; color: var(--silver-hi); user-select: all; font-variant-numeric: tabular-nums; }
+.copy-btn { background: transparent; border: 1px solid var(--line); color: var(--silver); font: 500 .75rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase; padding: 10px 14px; cursor: pointer; border-radius: 2px; }
+.copy-btn:hover { border-color: var(--silver-lo); color: var(--silver-hi); }
+.small { font-size: .875rem; color: var(--silver-lo); }
+
+form.inquiry { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; border: 1px solid var(--line); background: var(--metal-2); padding: 28px; }
+@media (max-width: 520px) { form.inquiry { grid-template-columns: 1fr; padding: 22px 18px; } }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+label { font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; color: var(--silver-lo); font-weight: 500; }
+input, select, textarea {
+  width: 100%; background: var(--metal); color: var(--silver-hi); border: 1px solid var(--line);
+  border-radius: 2px; padding: 12px 12px; font: 400 1rem/1.4 var(--body);
+}
+textarea { min-height: 96px; resize: vertical; }
+input::placeholder, textarea::placeholder { color: #5d5e62; }
+.form-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.preview { grid-column: 1 / -1; display: grid; gap: 8px; }
+.preview pre { margin: 0; white-space: pre-wrap; word-break: break-word; font: 400 .875rem/1.55 var(--body); color: var(--silver); background: var(--metal); border: 1px dashed var(--line); padding: 14px; }
+.status { font-size: .875rem; color: var(--silver-hi); min-height: 1.4em; }
+
+footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: var(--step--1); color: var(--silver-lo); letter-spacing: .06em; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .mark .lid, .mark .q { animation: none; }
+}
+</style>
+
+<!-- Logo as an SVG symbol, redrawn from the card -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="silver" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#f1f1f2"/>
+      <stop offset=".45" stop-color="#c9cacc"/>
+      <stop offset=".7" stop-color="#9a9b9f"/>
+      <stop offset="1" stop-color="#d9dadc"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Blaise Culinary Creations, back to top">
+      <svg viewBox="0 0 200 190" aria-hidden="true">
+        <g fill="url(#silver)">
+          <rect x="88" y="6" width="24" height="10" rx="3"/>
+          <path d="M30 86 C30 44 62 20 100 20 C138 20 170 44 170 86 Z"/>
+          <rect x="22" y="88" width="156" height="8" rx="2"/>
+          <path d="M8 172 L40 140 L160 140 L192 172 Z M30 166 L170 166 L152 148 L48 148 Z" fill-rule="evenodd"/>
+          <ellipse cx="100" cy="157" rx="40" ry="6"/>
+        </g>
+      </svg>
+      <span>Blaise Culinary Creations</span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="#services">Services</a>
+      <a href="#menus">Menus</a>
+      <a href="#plates">Plates</a>
+      <a href="#about">About</a>
+      <a href="#book" class="nav-book">Book</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <svg class="mark" viewBox="0 0 200 240" role="img" aria-label="Blaise Culinary Creations logo: a cloche lifted above a plate, with a question mark between">
+        <g class="lid" fill="url(#silver)">
+          <path d="M88 8 h24 a4 4 0 0 1 4 4 v8 h-32 v-8 a4 4 0 0 1 4 -4z"/>
+          <path fill-rule="evenodd" d="M24 96 C24 52 58 22 100 22 C142 22 176 52 176 96 Z
+            M38 90 L52 90 C54 66 66 46 84 36 C60 42 42 62 38 90 Z
+            M162 90 L148 90 C146 66 134 46 116 36 C140 42 158 62 162 90 Z"/>
+          <path fill-rule="evenodd" d="M18 98 h164 v12 h-164 z M32 101 h22 v6 h-22 z"/>
+        </g>
+        <g class="q" fill="url(#silver)">
+          <path d="M100 124 c-10 0 -17 6 -17 14 h9 c0 -4 3 -7 8 -7 c5 0 8 3 8 7 c0 4 -3 6 -7 9 c-5 3 -6 7 -6 12 v3 h8 v-2 c0 -4 1 -5 5 -8 c5 -3 9 -7 9 -14 c0 -9 -7 -14 -17 -14 z"/>
+          <circle cx="100" cy="176" r="5"/>
+        </g>
+        <g fill="url(#silver)">
+          <path fill-rule="evenodd" d="M4 228 L40 192 L160 192 L196 228 L196 234 L4 234 Z M22 222 L178 222 L156 200 L44 200 Z"/>
+          <ellipse cx="100" cy="211" rx="46" ry="7"/>
+        </g>
+      </svg>
+      <h1 class="wordmark engraved">Blaise Culinary Creations</h1>
+      <p class="byline">Clauvys Blaise<i>/</i>Personal Chef</p>
+      <p class="thesis">Every course arrives with a question. Lift the cloche and find out what's underneath.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-solid" href="#book">Request a date</a>
+        <a class="btn btn-ghost" href="https://fash.com/ga/johns-creek/personal-chefs/blaise-culinary-creations--tUq1dLkU3" target="_blank" rel="noopener">See reviews on Fash</a>
+      </div>
+      <p class="area">In-home dining in Dacula, Gwinnett County and metro Atlanta. Happy to travel.</p>
+      <a class="ig" href="https://www.instagram.com/blaise_culinary_creations/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        See the plates on Instagram
+      </a>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2>A restaurant-level table, in your own dining room</h2>
+        <p class="lede">I cook every cuisine, from Haitian and French to Japanese and Korean. Every booking starts with a conversation about who's at the table.</p>
+      </div>
+      <div class="services">
+        <article class="service feature">
+          <span class="tag">The main event</span>
+          <h3>Tasting Dinners</h3>
+          <p>A multi-course menu built around a theme, cooked and plated in your kitchen and served course by course.</p>
+          <ul>
+            <li>Four- and five-course menus, designed for your guests</li>
+            <li>Modernist plating: foams, fluid gels, tweezer-placed garnish</li>
+            <li>Wine and spirit pairings suggested for every course</li>
+            <li>Built for intimate groups, birthdays and anniversaries</li>
+          </ul>
+        </article>
+        <article class="service">
+          <span class="tag">Every week</span>
+          <h3>Meal Prep</h3>
+          <p>Chef-made meals for the week, planned around your schedule, tastes and dietary needs.</p>
+          <ul>
+            <li>Cooked in your kitchen or delivered</li>
+            <li>Menus planned with you before each cook</li>
+            <li>Portioned and labeled so reheating is simple</li>
+            <li>Vegetarian and vegan versions on request</li>
+          </ul>
+        </article>
+        <article class="service">
+          <span class="tag">Hands on</span>
+          <h3>Cooking Lessons</h3>
+          <p>Learn in your own kitchen, with your own equipment, one dish or a full menu at a time.</p>
+          <ul>
+            <li>Knife work, sauces, searing and plating</li>
+            <li>Sous vide and other modern techniques</li>
+            <li>Private sessions, couples or small groups</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="menus">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Sample menus</p>
+        <h2>Menus I've cooked and served</h2>
+        <p class="lede">Each one is a starting point. Your dinner gets its own menu, written around your guests and the season.</p>
+      </div>
+      <div class="menus">
+        <article class="menu-card valse" id="valse">
+          <div class="cover" id="valseCover">
+            <svg class="cover-cloche" viewBox="0 0 200 130" aria-hidden="true">
+              <g class="cover-lid" fill="url(#silver)">
+                <path d="M88 8 h24 a4 4 0 0 1 4 4 v8 h-32 v-8 a4 4 0 0 1 4 -4z"/>
+                <path fill-rule="evenodd" d="M24 96 C24 52 58 22 100 22 C142 22 176 52 176 96 Z
+                  M38 90 L52 90 C54 66 66 46 84 36 C60 42 42 62 38 90 Z
+                  M162 90 L148 90 C146 66 134 46 116 36 C140 42 158 62 162 90 Z"/>
+                <path d="M18 98 h164 v12 h-164 z"/>
+              </g>
+              <path fill="url(#silver)" d="M4 124 h192 v4 h-192 z"/>
+            </svg>
+            <h3>Valse de l'Incertitude</h3>
+            <button class="btn btn-ghost" type="button" id="liftBtn" aria-controls="valseBody" aria-expanded="false">Lift the cloche</button>
+          </div>
+          <div class="valse-body" id="valseBody" hidden>
+          <div class="meta"><span>Five movements</span><span>A tasting of hidden truths</span></div>
+          <h3>Valse de l'Incertitude</h3>
+          <p class="menu-note"><em>The plate will lie to you. Your palate will not.</em></p>
+          <ol class="courses">
+            <li><span><b>Première Valse · Coquille</b><br>Scallop, brown butter, coconut, plantain, shallot, carrot</span></li>
+            <li><span><b>Deuxième Valse · Tortellini in Brodo</b><br>Hand-folded pasta, clear broth, chili oil</span></li>
+            <li><span><b>Valse Hésitation · Kabayaki</b><br>Duck, lacquer, pressed rice, velouté</span></li>
+            <li><span><b>Intermezzo · Kakigori</b><br>Shaved ice, clear syrup</span></li>
+            <li><span><b>Dernière Valse · Vérité</b><br>Presented with the final course</span></li>
+          </ol>
+          <button class="copy-btn" type="button" id="coverBtn">Put the cloche back</button>
+          </div>
+        </article>
+
+        <article class="menu-card">
+          <div class="meta"><span>5 courses</span><span>Japanese pantry, French technique</span></div>
+          <h3>Okaeri</h3>
+          <p class="menu-note"><em>Welcome home.</em> Nothing here asks to be admired from a distance.</p>
+          <ol class="courses">
+            <li><span><b>Root vegetable samosa cup, tomato snow</b><br>Japanese red sweet potato, carrot, sweet onion, garlic, dashi oil, gochujang crumble, shaved fermented tomato</span></li>
+            <li><span><b>Seared scallops, yuzu beurre blanc</b><br>Sharp and puckering, with crisped prosciutto</span></li>
+            <li><span><b>Tortellini in smoked Gouda miso mornay</b><br>Ricotta, roasted garlic and lemon, kimchi, roasted oyster mushroom</span></li>
+            <li><span><b>Gochujang-glazed chicken ochazuke</b><br>Smoked shishito broth poured at the table, pickled carrot, short-grain rice</span></li>
+            <li><span><b>Sakura crème brûlée</b><br>Blackberry and lime coulis</span></li>
+          </ol>
+        </article>
+
+        <article class="menu-card">
+          <div class="meta"><span>5 courses</span><span>Late autumn</span><span>Wine pairing</span></div>
+          <h3>An Aged to Perfection Dinner</h3>
+          <ol class="courses">
+            <li><span><b>Whipped ricotta crostini trio</b></span></li>
+            <li><span><b>Butternut squash and porcini bisque</b> over bay scallops, finished tableside</span></li>
+            <li><span><b>Autumn kale salad</b> with apple, walnut and pomegranate vinaigrette</span></li>
+            <li><span><b>18-hour sous vide chuck roast</b> with a wagyu and duck fat potato pavé and celeriac-apple espuma</span></li>
+            <li><span><b>Chocolate soufflé</b> with pomegranate-Demerara reduction</span></li>
+          </ol>
+        </article>
+
+        <article class="menu-card">
+          <div class="meta"><span>4 courses</span><span>Fall harvest</span></div>
+          <h3>The Harvest Table</h3>
+          <ol class="courses">
+            <li><span><b>Harvest microgreen salad</b> with apple, pine nuts and carrot-ginger cider vinaigrette</span></li>
+            <li><span><b>Butternut squash risotto</b> with a hard-seared scallop and bacon chips</span></li>
+            <li><span><b>Sous vide steak</b> over pumpkin purée with Malbec reduction and sage-oil Brussels sprouts</span></li>
+            <li><span><b>Caramelized white miso gelato</b> with candied ginger, walnuts and whisky caramel</span></li>
+          </ol>
+        </article>
+      </div>
+      <p class="menus-foot">Alcohol isn't included. I'll recommend pairings for each course and you pick up the bottles.</p>
+    </div>
+  </section>
+
+  <section id="plates">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Plates</p>
+        <h2>From the pass</h2>
+        <p class="lede">New photos are on the way with the next round of menus. Until then, see recent plates on <a href="https://www.instagram.com/blaise_culinary_creations/" target="_blank" rel="noopener">Instagram</a>.</p>
+      </div>
+      <div class="gallery">
+          <figure class="plate">
+            <div class="plate-frame">
+              <!-- To add a photo: <img src="your-photo.jpg" alt="Describe the dish"> -->
+              <svg viewBox="0 0 200 130" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M24 96 C24 52 58 22 100 22 C142 22 176 52 176 96 Z"/><path d="M90 10 h20 v12 h-20 z"/><path d="M14 98 h172 v10 h-172 z"/></g></svg>
+            </div>
+            <figcaption>Coming soon</figcaption>
+          </figure>
+          <figure class="plate">
+            <div class="plate-frame">
+              <!-- To add a photo: <img src="your-photo.jpg" alt="Describe the dish"> -->
+              <svg viewBox="0 0 200 130" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M24 96 C24 52 58 22 100 22 C142 22 176 52 176 96 Z"/><path d="M90 10 h20 v12 h-20 z"/><path d="M14 98 h172 v10 h-172 z"/></g></svg>
+            </div>
+            <figcaption>Coming soon</figcaption>
+          </figure>
+          <figure class="plate">
+            <div class="plate-frame">
+              <!-- To add a photo: <img src="your-photo.jpg" alt="Describe the dish"> -->
+              <svg viewBox="0 0 200 130" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M24 96 C24 52 58 22 100 22 C142 22 176 52 176 96 Z"/><path d="M90 10 h20 v12 h-20 z"/><path d="M14 98 h172 v10 h-172 z"/></g></svg>
+            </div>
+            <figcaption>Coming soon</figcaption>
+          </figure>
+          <figure class="plate">
+            <div class="plate-frame">
+              <!-- To add a photo: <img src="your-photo.jpg" alt="Describe the dish"> -->
+              <svg viewBox="0 0 200 130" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M24 96 C24 52 58 22 100 22 C142 22 176 52 176 96 Z"/><path d="M90 10 h20 v12 h-20 z"/><path d="M14 98 h172 v10 h-172 z"/></g></svg>
+            </div>
+            <figcaption>Coming soon</figcaption>
+          </figure>
+          <figure class="plate">
+            <div class="plate-frame">
+              <!-- To add a photo: <img src="your-photo.jpg" alt="Describe the dish"> -->
+              <svg viewBox="0 0 200 130" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M24 96 C24 52 58 22 100 22 C142 22 176 52 176 96 Z"/><path d="M90 10 h20 v12 h-20 z"/><path d="M14 98 h172 v10 h-172 z"/></g></svg>
+            </div>
+            <figcaption>Coming soon</figcaption>
+          </figure>
+          <figure class="plate">
+            <div class="plate-frame">
+              <!-- To add a photo: <img src="your-photo.jpg" alt="Describe the dish"> -->
+              <svg viewBox="0 0 200 130" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M24 96 C24 52 58 22 100 22 C142 22 176 52 176 96 Z"/><path d="M90 10 h20 v12 h-20 z"/><path d="M14 98 h172 v10 h-172 z"/></g></svg>
+            </div>
+            <figcaption>Coming soon</figcaption>
+          </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>From first message to last course</h2>
+      </div>
+      <ol class="steps">
+        <li><span class="n">1</span><h4>Reach out</h4><p>Send your date, guest count and the occasion.</p></li>
+        <li><span class="n">2</span><h4>Plan the menu</h4><p>We talk tastes, allergies and dietary needs. I write a menu and pairing notes for you.</p></li>
+        <li><span class="n">3</span><h4>I cook on site</h4><p>I shop, bring my own equipment and cook in your kitchen.</p></li>
+        <li><span class="n">4</span><h4>Dinner is served</h4><p>Each course is plated and brought to the table, with the story behind the dish.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="copy">
+        <p class="eyebrow">About the chef</p>
+        <h2>Clauvys Blaise</h2>
+        <p class="lede">I trained at the Auguste Escoffier School of Culinary Arts and cooked on the line, in catering kitchens and at university dining stations on Long Island before bringing my table to Georgia.</p>
+        <p>My dinners began with friends and grew by word of mouth. I write each menu like a story: a theme, a twist, and a reason every plate looks the way it does. The logo says it plainly. A dinner should make you wonder what's under the cloche.</p>
+        <p>Next I'm working toward a twelve-course tasting menu and pop-up dinners. Book now and you'll be at the table early.</p>
+      </div>
+      <dl class="creds">
+        <div><dt>Training</dt><dd>Diploma in Culinary Arts, Auguste Escoffier School of Culinary Arts</dd></div>
+        <div><dt>Food safety</dt><dd>ServSafe Food Handler certified</dd></div>
+        <div><dt>Cuisines</dt><dd>All of them. Specialties in Haitian, French, Japanese and Korean fusion</dd></div>
+        <div><dt>Techniques</dt><dd>Sous vide, binchotan grilling, foams and fluid gels, scratch pasta</dd></div>
+        <div><dt>Based in</dt><dd>Dacula, GA, serving metro Atlanta</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="book">
+    <div class="wrap book-grid">
+      <div class="contact">
+        <p class="eyebrow">Book a dinner</p>
+        <h2>Pick a date. I'll handle the rest.</h2>
+        <svg class="fork" viewBox="0 0 240 60" role="img" aria-label="Fork, as engraved on the business card">
+          <g fill="url(#silver)">
+            <path d="M0 14 L118 26 C134 26 138 10 154 10 L154 50 C138 50 134 34 118 34 L0 46 Z"/>
+            <rect x="150" y="10" width="88" height="7" rx="3.5"/>
+            <rect x="150" y="21" width="88" height="7" rx="3.5"/>
+            <rect x="150" y="32" width="88" height="7" rx="3.5"/>
+            <rect x="150" y="43" width="88" height="7" rx="3.5"/>
+          </g>
+        </svg>
+        <p>Call, text or email to check availability. Or fill out the form and send your request straight to me. I'll get back to you within a day.</p>
+        <div class="phone-row">
+          <span class="phone" id="phone">(631) 710-1226</span>
+          <button class="copy-btn" type="button" id="copyPhone">Copy number</button>
+        </div>
+        <div class="phone-row">
+          <span class="email" id="email">blaiseculinarycreations@gmail.com</span>
+          <button class="copy-btn" type="button" id="copyEmail">Copy email</button>
+        </div>
+        <a class="ig" href="https://www.instagram.com/blaise_culinary_creations/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          @blaise_culinary_creations
+        </a>
+        <a class="btn btn-ghost" href="https://fash.com/ga/johns-creek/personal-chefs/blaise-culinary-creations--tUq1dLkU3" target="_blank" rel="noopener" style="justify-self:start">See reviews on Fash</a>
+        <p class="small">Please reach out at least two weeks ahead for tasting dinners so there's time to plan the menu. Groceries are billed separately at cost. I accept cash, PayPal and Zelle.</p>
+      </div>
+
+      <form class="inquiry" id="inquiry" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="booking">
+        <p hidden><label>Leave this empty <input name="bot-field"></label></p>
+        <div class="field full"><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" placeholder="Jordan Lee" required></div>
+        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="(404) 555-0123"></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+        <div class="field"><label for="f-service">Service</label>
+          <select id="f-service" name="service">
+            <option>Tasting dinner</option>
+            <option>Meal prep</option>
+            <option>Cooking lesson</option>
+          </select>
+        </div>
+        <div class="field"><label for="f-date">Date</label><input id="f-date" name="date" type="date"></div>
+        <div class="field"><label for="f-guests">Guests</label><input id="f-guests" name="guests" type="number" min="1" inputmode="numeric" placeholder="6"></div>
+        <div class="field full"><label for="f-city">City</label><input id="f-city" name="city" placeholder="Dacula, Buford, Lawrenceville…"></div>
+        <div class="field full"><label for="f-notes">Occasion, allergies, anything else</label><textarea id="f-notes" name="notes" placeholder="Anniversary dinner, one guest is pescatarian, we love Japanese food."></textarea></div>
+        <div class="preview" id="previewWrap">
+          <label for="msg">Your message</label>
+          <pre id="msg" tabindex="0"></pre>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-solid" type="submit" id="sendBtn">Send request</button>
+          <a class="btn btn-ghost" id="smsLink" href="sms:+16317101226">Open in Messages</a>
+          <a class="btn btn-ghost" id="mailLink" href="mailto:blaiseculinarycreations@gmail.com">Open in Email</a>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Blaise Culinary Creations · Clauvys Blaise, Personal Chef</span>
+    <span>Dacula, Georgia · (631) 710-1226 · blaiseculinarycreations@gmail.com · <a href="https://www.instagram.com/blaise_culinary_creations/" target="_blank" rel="noopener">Instagram</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('inquiry');
+  var msg = document.getElementById('msg');
+  var sms = document.getElementById('smsLink');
+  var status = document.getElementById('status');
+
+  function fmtDate(v) {
+    if (!v) return '';
+    var d = new Date(v + 'T12:00:00');
+    return isNaN(d) ? v : d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  }
+  function build() {
+    var g = function (id) { return document.getElementById(id).value.trim(); };
+    var lines = ['Hi Chef Blaise, I\'d like to book a ' + g('f-service').toLowerCase() + '.'];
+    if (g('f-name')) lines.push('Name: ' + g('f-name'));
+    if (g('f-phone')) lines.push('Phone: ' + g('f-phone'));
+    if (g('f-email')) lines.push('Email: ' + g('f-email'));
+    if (g('f-date')) lines.push('Date: ' + fmtDate(g('f-date')));
+    if (g('f-guests')) lines.push('Guests: ' + g('f-guests'));
+    if (g('f-city')) lines.push('City: ' + g('f-city'));
+    if (g('f-notes')) lines.push('Notes: ' + g('f-notes'));
+    return lines.join('\n');
+  }
+  function refresh() {
+    var t = build();
+    msg.textContent = t;
+    sms.href = 'sms:+16317101226?&body=' + encodeURIComponent(t);
+    document.getElementById('mailLink').href = 'mailto:blaiseculinarycreations@gmail.com?subject=' + encodeURIComponent('Booking request') + '&body=' + encodeURIComponent(t);
+  }
+  form.addEventListener('input', refresh);
+  form.addEventListener('change', refresh);
+  refresh();
+
+  function selectText(el) {
+    var r = document.createRange(); r.selectNodeContents(el);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  function copy(text, el, okMsg, target) {
+    var done = function () { target.textContent = okMsg; };
+    var fail = function () { selectText(el); target.textContent = 'Text selected. Press Copy to save it.'; };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fail);
+      } else { fail(); }
+    } catch (e) { fail(); }
+  }
+
+  var sendBtn = document.getElementById('sendBtn');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var g = function (id) { return document.getElementById(id).value.trim(); };
+    if (!g('f-name')) { status.textContent = 'Please add your name.'; document.getElementById('f-name').focus(); return; }
+    if (!g('f-phone') && !g('f-email')) { status.textContent = 'Please add a phone number or email so I can reply.'; document.getElementById('f-phone').focus(); return; }
+    var data = new URLSearchParams(new FormData(form));
+    data.set('service', g('f-service'));
+    sendBtn.disabled = true; status.textContent = 'Sending…';
+    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data.toString() })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        status.textContent = 'Thank you! Your request was sent. I\'ll be in touch within a day.';
+        form.reset(); refresh();
+      })
+      .catch(function () {
+        copy(build(), msg, 'That didn\'t go through, so I copied your message. Text it to (631) 710-1226 or email blaiseculinarycreations@gmail.com.', status);
+      })
+      .then(function () { sendBtn.disabled = false; });
+  });
+
+  var cover = document.getElementById('valseCover');
+  var vbody = document.getElementById('valseBody');
+  var liftBtn = document.getElementById('liftBtn');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  liftBtn.addEventListener('click', function () {
+    cover.classList.add('lifting');
+    liftBtn.setAttribute('aria-expanded', 'true');
+    setTimeout(function () {
+      cover.hidden = true;
+      vbody.hidden = false;
+      document.getElementById('valse').style.alignContent = 'start';
+    }, reduce ? 0 : 650);
+  });
+  document.getElementById('coverBtn').addEventListener('click', function () {
+    vbody.hidden = true;
+    cover.classList.remove('lifting');
+    cover.hidden = false;
+    liftBtn.setAttribute('aria-expanded', 'false');
+    document.getElementById('valse').style.alignContent = '';
+    liftBtn.focus();
+  });
+
+  var copyEmail = document.getElementById('copyEmail');
+  copyEmail.addEventListener('click', function () {
+    copy('blaiseculinarycreations@gmail.com', document.getElementById('email'), 'Copied', copyEmail);
+    setTimeout(function () { copyEmail.textContent = 'Copy email'; }, 2200);
+  });
+
+  var copyPhone = document.getElementById('copyPhone');
+  copyPhone.addEventListener('click', function () {
+    var el = document.getElementById('phone');
+    copy('6317101226', el, 'Copied', copyPhone);
+    setTimeout(function () { copyPhone.textContent = 'Copy number'; }, 2200);
+  });
+})();
+</script>
+
+<!-- Liaison Widget (Fash): lets visitors reach me through Fash -->
+<script src="https://cdn.fash.com/widget-loader.js"></script>
+<script>
+  if (window.LiaisonWidget) {
+    LiaisonWidget.init({
+      providerId: '6ac31a8c396283808cdf9cd2'
+    });
+  }
+</script>
+
+</body></html>
