@@ -1,0 +1,88 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Book a Personal Chef | Blaise Culinary Creations</title><meta name="description" content="Request a date for a personal chef dinner, meal prep or cooking lesson in Dacula and metro Atlanta."><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Archivo:wght@400;500;700&display=swap"><link rel="stylesheet" href="/styles.css"></head><body>
+<!-- Logo as an SVG symbol, redrawn from the card -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="silver" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#f1f1f2"/>
+      <stop offset=".45" stop-color="#c9cacc"/>
+      <stop offset=".7" stop-color="#9a9b9f"/>
+      <stop offset="1" stop-color="#d9dadc"/>
+    </linearGradient>
+  </defs>
+</svg>
+<header class="top"><div class="wrap"><a class="brand" href="/" aria-label="Blaise Culinary Creations, home"><svg viewBox="0 0 200 190" aria-hidden="true">
+        <g fill="url(#silver)">
+          <rect x="88" y="6" width="24" height="10" rx="3"/>
+          <path d="M30 86 C30 44 62 20 100 20 C138 20 170 44 170 86 Z"/>
+          <rect x="22" y="88" width="156" height="8" rx="2"/>
+          <path d="M8 172 L40 140 L160 140 L192 172 Z M30 166 L170 166 L152 148 L48 148 Z" fill-rule="evenodd"/>
+          <ellipse cx="100" cy="157" rx="40" ry="6"/>
+        </g>
+      </svg><span>Blaise Culinary Creations</span></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button><nav aria-label="Pages" id="site-nav"><a href="/services/">Services</a><a href="/menus/">Menus</a><a href="/plates/">Plates</a><a href="/about/">About</a><a href="/reviews/">Reviews</a><a href="/book/" class="nav-book" aria-current="page">Book</a></nav></div></header>
+<main id="top">
+<section id="book" class="first">
+    <div class="wrap book-grid">
+      <div class="contact">
+        <p class="eyebrow">Book a dinner</p>
+        <h1 class="page-title">Pick a date. I'll handle the rest.</h1>
+        <svg class="fork" viewBox="0 0 240 60" role="img" aria-label="Fork, as engraved on the business card">
+          <g fill="url(#silver)">
+            <path d="M0 14 L118 26 C134 26 138 10 154 10 L154 50 C138 50 134 34 118 34 L0 46 Z"/>
+            <rect x="150" y="10" width="88" height="7" rx="3.5"/>
+            <rect x="150" y="21" width="88" height="7" rx="3.5"/>
+            <rect x="150" y="32" width="88" height="7" rx="3.5"/>
+            <rect x="150" y="43" width="88" height="7" rx="3.5"/>
+          </g>
+        </svg>
+        <p>Call, text or email to check availability. Or fill out the form and send your request straight to me. I'll get back to you within a day.</p>
+        <div class="phone-row">
+          <span class="phone" id="phone">(631) 710-1226</span>
+          <button class="copy-btn" type="button" id="copyPhone">Copy number</button>
+        </div>
+        <div class="phone-row">
+          <span class="email" id="email">blaiseculinarycreations@gmail.com</span>
+          <button class="copy-btn" type="button" id="copyEmail">Copy email</button>
+        </div>
+        <a class="ig" href="https://www.instagram.com/blaise_culinary_creations/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          @blaise_culinary_creations
+        </a>
+        <a class="btn btn-ghost" href="/services/" style="justify-self:start">Compare services</a>
+        <p class="small">Please reach out at least two weeks ahead for tasting dinners so there's time to plan the menu. Groceries are billed separately at cost. I accept cash, PayPal and Zelle.</p>
+      </div>
+
+      <form class="inquiry" id="inquiry" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="booking">
+        <p hidden><label>Leave this empty <input name="bot-field"></label></p>
+        <div class="field full"><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" placeholder="Jordan Lee" required></div>
+        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="(404) 555-0123"></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+        <div class="field"><label for="f-service">Service</label>
+          <select id="f-service" name="service"><optgroup label="Dinners at your table"><option value="Private Dinner Party Chef | Up to 4 guests | $300" data-s="dinner-party">Private Dinner Party Chef: Up to 4 guests ($300)</option><option value="Private Dinner Party Chef | Up to 8 guests | $500" data-s="dinner-party">Private Dinner Party Chef: Up to 8 guests ($500)</option><option value="Romantic Dinner for Two | 3-course meal | $225" data-s="romantic-dinner">Romantic Dinner for Two: 3-course meal ($225)</option><option value="Romantic Dinner for Two | 5-course meal | $350" data-s="romantic-dinner">Romantic Dinner for Two: 5-course meal ($350)</option><option value="Chef&#x27;s Table Experience | 4-course experience | $450" data-s="chefs-table">Chef&#x27;s Table Experience: 4-course experience ($450)</option><option value="Wine Pairing Dinner | 3 courses + pairings | $375" data-s="wine-pairing">Wine Pairing Dinner: 3 courses + pairings ($375)</option><option value="Wine Pairing Dinner | 5 courses + pairings | $550" data-s="wine-pairing">Wine Pairing Dinner: 5 courses + pairings ($550)</option><option value="Interactive Dining Experience | 2-hour experience | $300" data-s="interactive-dining">Interactive Dining Experience: 2-hour experience ($300)</option></optgroup><optgroup label="Meals for the week"><option value="Batch Cooking for Freezer Meals | 10 meal portions | $150" data-s="batch-cooking">Batch Cooking for Freezer Meals: 10 meal portions ($150)</option><option value="Batch Cooking for Freezer Meals | 20 meal portions | $250" data-s="batch-cooking">Batch Cooking for Freezer Meals: 20 meal portions ($250)</option><option value="Weekly Meal Service | 5 meals, 1 serving each | $100" data-s="weekly-delivery">Weekly Meal Service: 5 meals, 1 serving each ($100)</option><option value="Weekly Meal Service | 10 meals, 1 serving each | $175" data-s="weekly-delivery">Weekly Meal Service: 10 meals, 1 serving each ($175)</option><option value="Weekly Meal Prep Consultation | Free consultation | Free" data-s="weekly-prep-consult">Weekly Meal Prep Consultation: Free consultation (Free)</option><option value="Fitness Meal Plan Consultation | Free consultation | Free" data-s="fitness-consult">Fitness Meal Plan Consultation: Free consultation (Free)</option><option value="Special Diet Consultation | Free consultation | Free" data-s="special-diet-consult">Special Diet Consultation: Free consultation (Free)</option></optgroup><optgroup label="Lessons and planning"><option value="Cooking Lessons with a Chef | Individual lesson, 2 hours | $175" data-s="cooking-lessons">Cooking Lessons with a Chef: Individual lesson, 2 hours ($175)</option><option value="Cooking Lessons with a Chef | Group lesson, up to 6 people | $350" data-s="cooking-lessons">Cooking Lessons with a Chef: Group lesson, up to 6 people ($350)</option><option value="Custom Menu Planning | 30-minute consultation | $50" data-s="menu-planning">Custom Menu Planning: 30-minute consultation ($50)</option><option value="Custom Menu Planning | 1-hour consultation | $90" data-s="menu-planning">Custom Menu Planning: 1-hour consultation ($90)</option></optgroup><optgroup label="Something else"><option value="Not sure yet | Custom | Quote">Not sure yet, let's talk</option></optgroup></select>
+        </div>
+        <div class="field"><label for="f-date">Date</label><input id="f-date" name="date" type="date"></div>
+        <div class="field"><label for="f-guests">Guests</label><input id="f-guests" name="guests" type="number" min="1" inputmode="numeric" placeholder="6"></div>
+        <div class="field full"><label for="f-city">City</label><input id="f-city" name="city" placeholder="Dacula, Buford, Lawrenceville…"></div>
+        <div class="field full"><label for="f-notes">Occasion, allergies, anything else</label><textarea id="f-notes" name="notes" placeholder="Anniversary dinner, one guest is pescatarian, we love Japanese food."></textarea></div>
+        <div class="preview" id="previewWrap">
+          <label for="msg">Your message</label>
+          <pre id="msg" tabindex="0"></pre>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-solid" type="submit" id="sendBtn">Send request</button>
+          <a class="btn btn-ghost" id="smsLink" href="sms:+16317101226">Open in Messages</a>
+          <a class="btn btn-ghost" id="mailLink" href="mailto:blaiseculinarycreations@gmail.com">Open in Email</a>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section><section id="book-prices"><div class="wrap"><div class="section-head"><p class="eyebrow">Services &amp; prices</p><h2>Not sure which to pick?</h2><p class="lede">Tap Choose and it fills in the form above.</p></div><div class="price-group"><h2 class="price-group-title">Dinners at your table</h2><div class="price-grid"><article class="price-card" id="dinner-party"><h3>Private Dinner Party Chef</h3><ul class="tiers"><li><span>Up to 4 guests</span><span class="dots" aria-hidden="true"></span><b>$300</b></li><li><span>Up to 8 guests</span><span class="dots" aria-hidden="true"></span><b>$500</b></li></ul><button type="button" class="price-book" data-pick="dinner-party">Choose</button></article><article class="price-card" id="romantic-dinner"><h3>Romantic Dinner for Two</h3><ul class="tiers"><li><span>3-course meal</span><span class="dots" aria-hidden="true"></span><b>$225</b></li><li><span>5-course meal</span><span class="dots" aria-hidden="true"></span><b>$350</b></li></ul><button type="button" class="price-book" data-pick="romantic-dinner">Choose</button></article><article class="price-card" id="chefs-table"><h3>Chef&#x27;s Table Experience</h3><ul class="tiers"><li><span>4-course experience</span><span class="dots" aria-hidden="true"></span><b>$450</b></li></ul><button type="button" class="price-book" data-pick="chefs-table">Choose</button></article><article class="price-card" id="wine-pairing"><h3>Wine Pairing Dinner</h3><ul class="tiers"><li><span>3 courses + pairings</span><span class="dots" aria-hidden="true"></span><b>$375</b></li><li><span>5 courses + pairings</span><span class="dots" aria-hidden="true"></span><b>$550</b></li></ul><button type="button" class="price-book" data-pick="wine-pairing">Choose</button></article><article class="price-card" id="interactive-dining"><h3>Interactive Dining Experience</h3><ul class="tiers"><li><span>2-hour experience</span><span class="dots" aria-hidden="true"></span><b>$300</b></li></ul><button type="button" class="price-book" data-pick="interactive-dining">Choose</button></article></div></div><div class="price-group"><h2 class="price-group-title">Meals for the week</h2><div class="price-grid"><article class="price-card" id="batch-cooking"><h3>Batch Cooking for Freezer Meals</h3><ul class="tiers"><li><span>10 meal portions</span><span class="dots" aria-hidden="true"></span><b>$150</b></li><li><span>20 meal portions</span><span class="dots" aria-hidden="true"></span><b>$250</b></li></ul><button type="button" class="price-book" data-pick="batch-cooking">Choose</button></article><article class="price-card" id="weekly-delivery"><h3>Weekly Meal Service</h3><ul class="tiers"><li><span>5 meals, 1 serving each</span><span class="dots" aria-hidden="true"></span><b>$100</b></li><li><span>10 meals, 1 serving each</span><span class="dots" aria-hidden="true"></span><b>$175</b></li></ul><button type="button" class="price-book" data-pick="weekly-delivery">Choose</button></article><article class="price-card" id="weekly-prep-consult"><h3>Weekly Meal Prep Consultation</h3><ul class="tiers"><li><span>Free consultation</span><span class="dots" aria-hidden="true"></span><b>Free</b></li></ul><button type="button" class="price-book" data-pick="weekly-prep-consult">Choose</button></article><article class="price-card" id="fitness-consult"><h3>Fitness Meal Plan Consultation</h3><ul class="tiers"><li><span>Free consultation</span><span class="dots" aria-hidden="true"></span><b>Free</b></li></ul><button type="button" class="price-book" data-pick="fitness-consult">Choose</button></article><article class="price-card" id="special-diet-consult"><h3>Special Diet Consultation</h3><ul class="tiers"><li><span>Free consultation</span><span class="dots" aria-hidden="true"></span><b>Free</b></li></ul><button type="button" class="price-book" data-pick="special-diet-consult">Choose</button></article></div></div><div class="price-group"><h2 class="price-group-title">Lessons and planning</h2><div class="price-grid"><article class="price-card" id="cooking-lessons"><h3>Cooking Lessons with a Chef</h3><ul class="tiers"><li><span>Individual lesson, 2 hours</span><span class="dots" aria-hidden="true"></span><b>$175</b></li><li><span>Group lesson, up to 6 people</span><span class="dots" aria-hidden="true"></span><b>$350</b></li></ul><button type="button" class="price-book" data-pick="cooking-lessons">Choose</button></article><article class="price-card" id="menu-planning"><h3>Custom Menu Planning</h3><ul class="tiers"><li><span>30-minute consultation</span><span class="dots" aria-hidden="true"></span><b>$50</b></li><li><span>1-hour consultation</span><span class="dots" aria-hidden="true"></span><b>$90</b></li></ul><button type="button" class="price-book" data-pick="menu-planning">Choose</button></article></div></div><p class="price-note">Prices cover my time, planning, cooking, service and cleanup of my own equipment. Groceries are billed separately at cost, with receipts. Alcohol isn't included; I recommend pairings and you pick up the bottles. Travel beyond 30 miles from Dacula may add a fee.</p></div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Blaise Culinary Creations · Clauvys Blaise, Personal Chef</span>
+    <span>Dacula, Georgia · (631) 710-1226 · blaiseculinarycreations@gmail.com · <a href="https://www.instagram.com/blaise_culinary_creations/" target="_blank" rel="noopener">Instagram</a></span>
+  </div>
+</footer>
+<script src="/site.js" defer></script>
+</body></html>
