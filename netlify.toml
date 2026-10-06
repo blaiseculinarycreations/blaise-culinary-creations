@@ -1,21 +1,9 @@
 [build]
-  publish = "."
+  publish = "site"
 
 [functions]
   directory = "netlify/functions"
-
-# The repo root is published, so keep source and SQL files from being served as pages.
-[[redirects]]
-  from = "/netlify/*"
-  to = "/404.html"
-  status = 404
-  force = true
-
-[[redirects]]
-  from = "/supabase/*"
-  to = "/404.html"
-  status = 404
-  force = true
+  node_bundler = "esbuild"
 
 # Private dashboard pages: never cached, indexed or framed by other sites.
 [[headers]]
