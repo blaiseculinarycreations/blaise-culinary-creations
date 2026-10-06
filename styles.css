@@ -287,3 +287,6 @@ section.first-tight { border-top: 0; padding-block: 24px clamp(48px, 8vw, 88px);
 /* external review links */
 .ext-reviews { display: flex; flex-wrap: wrap; gap: 10px; }
 .ext-reviews a[hidden], [data-link-wrap][hidden] { display: none; }
+
+/* hidden must always win (the cloche reveal and other toggles rely on it) */
+[hidden]:not([hidden=until-found i]) { display: none !important; }
