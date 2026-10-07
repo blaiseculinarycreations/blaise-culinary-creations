@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clients | Blaise Pro</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0d0d0e">
+<style>
+:root { --bg:#0d0d0e; --panel:#161618; --line:#2a2a2d; --text:#d6d7d9; --hi:#f1f1f2; --lo:#8d8e92; --bad:#e9a19a; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 "Helvetica Neue", Arial, sans-serif; }
+header { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); }
+h1 { font-size:1.05rem; letter-spacing:.14em; text-transform:uppercase; color:var(--hi); margin:0; }
+main { max-width:960px; margin:0 auto; padding:20px 16px 60px; display:grid; gap:20px; }
+button, input, textarea { font:inherit; color:inherit; }
+button { background:var(--hi); color:var(--bg); border:0; padding:9px 14px; border-radius:3px; cursor:pointer; font-weight:600; }
+button.ghost { background:transparent; color:var(--hi); border:1px solid var(--line); }
+button:disabled { opacity:.5; cursor:default; }
+input, textarea { width:100%; background:var(--panel); border:1px solid var(--line); border-radius:3px; padding:9px 10px; }
+label { display:grid; gap:4px; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--lo); }
+.panel { background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:16px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); gap:12px; }
+.full { grid-column:1 / -1; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.msg { min-height:1.4em; font-size:.9rem; }
+.msg.bad { color:var(--bad); }
+ul.list { list-style:none; margin:0; padding:0; }
+ul.list li { border-top:1px solid var(--line); padding:12px 0; display:grid; gap:4px; }
+ul.list li:first-child { border-top:0; }
+.name { color:var(--hi); font-weight:600; }
+.muted { color:var(--lo); font-size:.9rem; }
+.diet { white-space:pre-wrap; font-size:.9rem; }
+[hidden] { display:none !important; }
+</style>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script src="/pro/identity-client.js" defer></script>
+</head>
+<body>
+<header>
+  <h1>Blaise Pro · Clients</h1>
+  <div class="row"><span class="muted" id="who"></span><button class="ghost" id="authBtn" type="button">Sign in</button></div>
+</header>
+<main>
+  <section class="panel" id="signedOut">
+    <p>Client records are private. Sign in with your Blaise Culinary Creations account to see them.</p>
+  </section>
+
+  <section id="app" hidden>
+    <div class="panel">
+      <form id="clientForm" class="grid" novalidate>
+        <input type="hidden" name="id">
+        <label class="full">Name<input name="full_name" required maxlength="120" autocomplete="off"></label>
+        <label>Phone<input name="phone" type="tel" maxlength="20" autocomplete="off"></label>
+        <label>Email<input name="email" type="email" maxlength="254" autocomplete="off"></label>
+        <label class="full">Address<input name="address_line1" maxlength="200" autocomplete="off"></label>
+        <label class="full">Apt, suite<input name="address_line2" maxlength="200" autocomplete="off"></label>
+        <label>City<input name="city" maxlength="100" autocomplete="off"></label>
+        <label>State<input name="state" maxlength="2" placeholder="GA" autocomplete="off"></label>
+        <label>ZIP<input name="postal_code" maxlength="10" inputmode="numeric" autocomplete="off"></label>
+        <label class="full">Dietary restrictions and preferences<textarea name="dietary_notes" rows="3" maxlength="4000"></textarea></label>
+        <div class="row full"><button type="submit" id="saveBtn">Add client</button><button type="button" class="ghost" id="cancelBtn" hidden>Cancel edit</button></div>
+        <p class="msg full" id="formMsg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="row"><input id="search" type="search" placeholder="Search name, phone or email" style="flex:1;min-width:12rem"><button class="ghost" id="refreshBtn" type="button">Refresh</button></div>
+      <p class="msg" id="listMsg" role="status" aria-live="polite"></p>
+      <ul class="list" id="list"></ul>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var id = window.netlifyIdentity;
+  var form = $('clientForm');
+
+  function setMsg(el, text, bad) { el.textContent = text || ''; el.classList.toggle('bad', !!bad); }
+
+  function handleError(err, el) {
+    if (err && err.name === 'AuthError') { showSignedOut(); if (id) id.open('login'); setMsg(el, err.message, true); return; }
+    setMsg(el, (err && err.message) || 'Something went wrong.', true);
+  }
+
+  function showSignedOut() { $('app').hidden = true; $('signedOut').hidden = false; $('authBtn').textContent = 'Sign in'; $('who').textContent = ''; $('list').replaceChildren(); }
+  function showSignedIn(user) { $('app').hidden = false; $('signedOut').hidden = true; $('authBtn').textContent = 'Sign out'; $('who').textContent = user.email; load(); }
+
+  function fmtPhone(p) {
+    var m = /^\+1(\d{3})(\d{3})(\d{4})$/.exec(p || '');
+    return m ? '(' + m[1] + ') ' + m[2] + '-' + m[3] : (p || '');
+  }
+
+  // Build every row with textContent so client data can never inject HTML.
+  function row(c) {
+    var li = document.createElement('li');
+    var name = document.createElement('span'); name.className = 'name'; name.textContent = c.full_name;
+    var contact = document.createElement('span'); contact.className = 'muted';
+    contact.textContent = [fmtPhone(c.phone), c.email].filter(Boolean).join(' · ');
+    var addr = document.createElement('span'); addr.className = 'muted';
+    addr.textContent = [c.address_line1, c.address_line2, [c.city, c.state].filter(Boolean).join(', '), c.postal_code].filter(Boolean).join(', ');
+    li.append(name, contact, addr);
+    if (c.dietary_notes) { var d = document.createElement('span'); d.className = 'diet'; d.textContent = c.dietary_notes; li.append(d); }
+    var actions = document.createElement('div'); actions.className = 'row';
+    var edit = document.createElement('button'); edit.type = 'button'; edit.className = 'ghost'; edit.textContent = 'Edit';
+    edit.addEventListener('click', function () { startEdit(c); });
+    var del = document.createElement('button'); del.type = 'button'; del.className = 'ghost'; del.textContent = 'Delete';
+    del.addEventListener('click', function () { removeClient(c, del); });
+    actions.append(edit, del); li.append(actions);
+    return li;
+  }
+
+  var searchTimer;
+  async function load() {
+    setMsg($('listMsg'), 'Loading…');
+    try {
+      var res = await ClientsAPI.list({ q: $('search').value.trim(), limit: 500 });
+      $('list').replaceChildren.apply($('list'), res.clients.map(row));
+      setMsg($('listMsg'), res.clients.length ? (res.total || res.clients.length) + ' client' + (res.clients.length === 1 ? '' : 's') : 'No clients yet.');
+    } catch (err) { handleError(err, $('listMsg')); }
+  }
+
+  function formData() {
+    var out = {};
+    ['full_name','phone','email','address_line1','address_line2','city','state','postal_code','dietary_notes'].forEach(function (k) {
+      out[k] = form.elements[k].value.trim() || null;
+    });
+    if (out.state) out.state = out.state.toUpperCase();
+    return out;
+  }
+
+  function startEdit(c) {
+    form.elements.id.value = c.id;
+    Object.keys(c).forEach(function (k) { if (form.elements[k] && k !== 'id') form.elements[k].value = c[k] || ''; });
+    $('saveBtn').textContent = 'Save changes'; $('cancelBtn').hidden = false;
+    form.scrollIntoView({ behavior: 'smooth' }); form.elements.full_name.focus();
+  }
+  function resetForm() { form.reset(); form.elements.id.value = ''; $('saveBtn').textContent = 'Add client'; $('cancelBtn').hidden = true; }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var data = formData();
+    if (!data.full_name) { setMsg($('formMsg'), 'Name is required.', true); return; }
+    var editing = form.elements.id.value;
+    $('saveBtn').disabled = true; setMsg($('formMsg'), 'Saving…');
+    try {
+      if (editing) await ClientsAPI.update(editing, data); else await ClientsAPI.create(data);
+      setMsg($('formMsg'), editing ? 'Saved.' : 'Client added.'); resetForm(); load();
+    } catch (err) { handleError(err, $('formMsg')); }
+    finally { $('saveBtn').disabled = false; }
+  });
+
+  async function removeClient(c, btn) {
+    if (!window.confirm('Delete ' + c.full_name + '? This cannot be undone.')) return;
+    btn.disabled = true;
+    try { await ClientsAPI.remove(c.id); load(); }
+    catch (err) { btn.disabled = false; handleError(err, $('listMsg')); }
+  }
+
+  $('cancelBtn').addEventListener('click', resetForm);
+  $('refreshBtn').addEventListener('click', load);
+  $('search').addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(load, 300); });
+  $('authBtn').addEventListener('click', function () {
+    if (!id) return;
+    if (id.currentUser()) id.logout(); else id.open('login');
+  });
+
+  if (!id) { setMsg($('formMsg'), 'Sign-in failed to load. Reload the page.', true); return; }
+  id.on('init', function (user) { if (user) showSignedIn(user); else showSignedOut(); });
+  id.on('login', function (user) { id.close(); showSignedIn(user); });
+  id.on('logout', showSignedOut);
+  id.on('error', function (err) { setMsg($('listMsg'), (err && err.message) || 'Sign-in error.', true); });
+})();
+</script>
+</body>
+</html>
