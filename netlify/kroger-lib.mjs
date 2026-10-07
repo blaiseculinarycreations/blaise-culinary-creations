@@ -45,7 +45,8 @@ async function tokenRequest(params) {
   const text = await res.text();
   if (!res.ok) {
     console.error('[kroger] token error', res.status, text.slice(0, 300));
-    if (res.status === 400 || res.status === 401) throw new KrogerError('Kroger rejected the sign-in. Check the Kroger keys on the site.', 502, 'auth_failed');
+    let why = ''; try { const j = JSON.parse(text); why = String(j.error || j.code || '').replace(/[^a-z_]/gi, '').slice(0, 40); } catch {}
+    if (res.status === 400 || res.status === 401) throw new KrogerError('Kroger rejected the sign-in' + (why ? ' (' + why + ')' : '') + '. Check the Kroger keys on the site.', 502, 'auth_failed');
     throw new KrogerError('Kroger sign-in failed. Try again.', 502);
   }
   return JSON.parse(text);
