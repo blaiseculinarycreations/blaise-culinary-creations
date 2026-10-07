@@ -1,6 +1,6 @@
 // Remote MCP server (Streamable HTTP, JSON responses) exposing Kroger stores,
 // prices and cart to Claude. Reached at /mcp/<BCC_MCP_KEY>; any other key gets 404.
-import { KrogerError, keyMatches, configured, findStores, searchPrices, addToCart, cartLinked } from '../kroger-lib.mjs';
+import { KrogerError, keyMatches, configured, findStores, searchPrices, addToCart, cartLinked, apiEnv } from '../kroger-lib.mjs';
 
 export const config = { path: '/mcp/:key' };
 
@@ -42,7 +42,7 @@ const rpcError = (id, code, message) => ({ jsonrpc: '2.0', id: id ?? null, error
 
 async function callTool(name, args, linkUrl) {
   switch (name) {
-    case 'find_stores': return { stores: await findStores({ zip: args.zip, radiusMiles: args.radius_miles }) };
+    case 'find_stores': { const stores = await findStores({ zip: args.zip, radiusMiles: args.radius_miles }); return { stores, kroger_env: apiEnv() }; }
     case 'search_prices': return searchPrices({ query: args.query, locationIds: args.location_ids, limit: args.limit });
     case 'cart_status': { const s = await cartLinked(); return s.linked ? s : { ...s, link_url: linkUrl }; }
     case 'add_to_cart': return addToCart({ items: args.items, modality: args.modality });

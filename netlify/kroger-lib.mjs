@@ -3,7 +3,10 @@
 import { getStore } from '@netlify/blobs';
 import crypto from 'node:crypto';
 
-export const API = 'https://api.kroger.com/v1';
+// Kroger has a live (production) and a test (certification) environment; a new app may live in either.
+const BASES = { production: 'https://api.kroger.com/v1', certification: 'https://api-ce.kroger.com/v1' };
+let API = process.env.KROGER_ENV === 'certification' ? BASES.certification : BASES.production;
+export const apiEnv = () => (API === BASES.certification ? 'certification' : 'production');
 export const REDIRECT_URI = 'https://blaiseculinarycreations.netlify.app/kroger/callback';
 const TIMEOUT_MS = 8000;
 
@@ -34,7 +37,7 @@ async function kfetch(url, opts = {}) {
   } finally { clearTimeout(t); }
 }
 
-async function tokenRequest(params) {
+async function tokenRequest(params, retried = false) {
   if (!configured()) throw new KrogerError('Kroger keys are not set on the site.', 503, 'not_configured');
   const basic = Buffer.from(`${process.env.KROGER_CLIENT_ID}:${process.env.KROGER_CLIENT_SECRET}`).toString('base64');
   const res = await kfetch(`${API}/connect/oauth2/token`, {
@@ -46,7 +49,11 @@ async function tokenRequest(params) {
   if (!res.ok) {
     console.error('[kroger] token error', res.status, text.slice(0, 300));
     let why = ''; try { const j = JSON.parse(text); why = String(j.error || j.code || '').replace(/[^a-z_]/gi, '').slice(0, 40); } catch {}
-    if (res.status === 400 || res.status === 401) throw new KrogerError('Kroger rejected the sign-in' + (why ? ' (' + why + ')' : '') + '. Check the Kroger keys on the site.', 502, 'auth_failed');
+    if (res.status === 401 && !retried && !process.env.KROGER_ENV && params.grant_type === 'client_credentials') {
+      API = API === BASES.production ? BASES.certification : BASES.production;
+      try { return await tokenRequest(params, true); } catch (e2) { API = BASES.production; throw e2; }
+    }
+    if (res.status === 400 || res.status === 401) throw new KrogerError('Kroger rejected the sign-in' + (why ? ' (' + why + ')' : '') + (retried ? ' in both its live and test systems' : '') + '. Check the Kroger keys on the site.', 502, 'auth_failed');
     throw new KrogerError('Kroger sign-in failed. Try again.', 502);
   }
   return JSON.parse(text);
