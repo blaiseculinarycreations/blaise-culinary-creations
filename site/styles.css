@@ -294,3 +294,6 @@ section.first-tight { border-top: 0; padding-block: 24px clamp(48px, 8vw, 88px);
 /* keep the name and Menu button on one row on small phones */
 @media (max-width: 430px) { .brand span { font-size: .8rem; letter-spacing: .05em; } .brand { gap: 8px; } .nav-toggle { padding: 8px 10px; } }
 @media (max-width: 380px) { .brand span { font-size: .7rem; letter-spacing: .03em; } .brand svg { width: 24px; height: 24px; } header.top .wrap { gap: 8px; } }
+/* service areas */
+.area-list { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: .4rem 1rem; }
+.area-list li { padding: .35rem 0; border-bottom: 1px solid rgba(127,127,127,.2); }
