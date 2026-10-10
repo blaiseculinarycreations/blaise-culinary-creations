@@ -275,6 +275,10 @@ section.first-tight { border-top: 0; padding-block: 24px clamp(48px, 8vw, 88px);
 .pdep { font-size: .8rem; letter-spacing: .06em; color: var(--silver-hi); }
 .terms h2 { font-family: var(--display); font-weight: 500; font-size: var(--step-2); color: var(--silver-hi); margin: 36px 0 12px; }
 .terms p { margin: 0 0 12px; }
+.terms .terms-list { margin: 0 0 12px; padding: 0; list-style: none; display: grid; gap: 10px; max-width: 70ch; }
+.terms .terms-list li { padding-left: 18px; position: relative; }
+.terms .terms-list li::before { content: ""; position: absolute; left: 0; top: .78em; width: 8px; height: 1px; background: var(--silver-lo); }
+.terms .terms-list strong { color: var(--silver-hi); font-weight: 500; }
 .terms .tbl { overflow-x: auto; margin-bottom: 12px; }
 .terms table { width: 100%; border-collapse: collapse; font-size: .9375rem; }
 .terms th { text-align: left; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--silver-lo); font-weight: 500; padding: 8px 10px; border-bottom: 1px solid var(--line); }
