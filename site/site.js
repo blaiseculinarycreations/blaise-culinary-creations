@@ -85,7 +85,8 @@
     var refresh = function () {
       var t = build(); showEst();
       if (msg) msg.textContent = t;
-      if (sms) sms.href = 'sms:+16317101226?&body=' + encodeURIComponent(t);
+      // iPhone and iPad want '&body=', Android and others want '?body='
+      if (sms) sms.href = 'sms:+16317101226' + (/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) ? '&' : '?') + 'body=' + encodeURIComponent(t);
       if (mail) mail.href = 'mailto:blaiseculinarycreations@gmail.com?subject=' + encodeURIComponent('Booking request') + '&body=' + encodeURIComponent(t);
     };
     var pick = function (sid, scroll) {
@@ -162,6 +163,15 @@
     form.addEventListener('input', refresh);
     form.addEventListener('change', refresh);
     try { pick(new URLSearchParams(location.search).get('s'), false); } catch (e) {}
+    // Some phone browsers (inside Instagram, Gmail and similar apps) block text and email links.
+    // Copy the message on tap too, so the visitor can always paste it.
+    [[sms, 'text it to (631) 710-1226'], [mail, 'email it to blaiseculinarycreations@gmail.com']].forEach(function (pair) {
+      var a = pair[0]; if (!a) return;
+      a.addEventListener('click', function () {
+        var t = build();
+        try { if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { if (status) status.textContent = 'Your message is also copied. If the app didn\'t open, paste it and ' + pair[1] + '.'; }, function () {}); } catch (e) {}
+      });
+    });
     fillGuests(); adultToggle(); checkDate();
     refresh();
     document.addEventListener('click', function (e) {
