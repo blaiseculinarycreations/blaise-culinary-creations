@@ -47,7 +47,7 @@
     // chef fee estimate from the selected tier: base covers data-incl guests, + data-extra each up to data-cap; extra hands from data-helpfrom
     var estimate = function () {
       var o = svc && svc.selectedOptions && svc.selectedOptions[0]; if (!o) return null;
-      var base = +o.getAttribute('data-base') || 0, guests = Math.round(+g('f-guests') || 0), pair = $('pairWrap') && !$('pairWrap').hidden ? g('f-pairing') : '';
+      var base = +o.getAttribute('data-base') || 0, guests = parseInt(g('f-guests'), 10) || 0, pair = $('pairWrap') && !$('pairWrap').hidden ? g('f-pairing') : '';
       if (!base && !pair) return null;
       if (!base) { var m = /\$([0-9,]+)\s*$/.exec(o.value); base = m ? +m[1].replace(/,/g, '') : 0; }
       var total = base, over = false, cap = +o.getAttribute('data-cap') || 0, incl = +o.getAttribute('data-incl') || 0;
@@ -91,7 +91,7 @@
     var pick = function (sid, scroll) {
       if (!svc || !sid) return;
       var o = svc.querySelector('option[data-s="' + sid + '"]');
-      if (o) { svc.value = o.value; refresh(); if (typeof adultToggle === 'function') adultToggle(); if (typeof checkDate === 'function') checkDate(); }
+      if (o) { svc.value = o.value; if (typeof fillGuests === 'function') fillGuests(); refresh(); if (typeof adultToggle === 'function') adultToggle(); if (typeof checkDate === 'function') checkDate(); }
       if (scroll) { form.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function () { svc.focus({ preventScroll: true }); }, 400); }
     };
     var callToggle = function () {
@@ -108,6 +108,15 @@
       return need;
     };
     if (svc) svc.addEventListener('change', adultToggle);
+    // guest count dropdown sized to the selected service (its cap, or 1-20)
+    var fillGuests = function () {
+      var gs = $('f-guests'); if (!gs || gs.tagName !== 'SELECT') return;
+      var o = svc && svc.selectedOptions && svc.selectedOptions[0], cap = o ? +o.getAttribute('data-cap') || 0 : 0, cur = gs.value, max = cap || 20, h = '<option value="">How many guests?</option>';
+      for (var i = 1; i <= max; i++) h += '<option value="' + i + '">' + i + (i === 1 ? ' guest' : ' guests') + '</option>';
+      h += '<option value="' + (max + 1) + '+">More than ' + max + (cap ? ' (custom quote)' : '') + '</option>';
+      gs.innerHTML = h; if (cur && gs.querySelector('option[value="' + cur + '"]')) gs.value = cur;
+    };
+    if (svc) svc.addEventListener('change', function () { fillGuests(); refresh(); });
     if ($('f-pairing')) $('f-pairing').addEventListener('change', adultToggle);
     // ---- date rules: no past dates, two weeks' notice for dinners, booked/blocked days ----
     var dateEl = $('f-date'), dateMsg = $('dateMsg'), depNote = $('depNote'), taken = {};
@@ -134,7 +143,7 @@
     form.addEventListener('input', refresh);
     form.addEventListener('change', refresh);
     try { pick(new URLSearchParams(location.search).get('s'), false); } catch (e) {}
-    adultToggle(); checkDate();
+    fillGuests(); adultToggle(); checkDate();
     refresh();
     document.addEventListener('click', function (e) {
       var b = e.target.closest('[data-pick]'); if (b) pick(b.getAttribute('data-pick'), true);
@@ -151,7 +160,7 @@
       sendBtn.disabled = true; status.textContent = 'Sending…';
       post(form).then(function () {
         status.textContent = 'Thank you! Your request was sent. I\'ll be in touch within a day.';
-        form.reset(); callToggle(); adultToggle(); checkDate(); refresh();
+        form.reset(); fillGuests(); callToggle(); adultToggle(); checkDate(); refresh();
       }).catch(function () {
         copy(build(), msg, 'That didn\'t go through, so I copied your message. Text it to (631) 710-1226 or email blaiseculinarycreations@gmail.com.', status);
       }).then(function () { sendBtn.disabled = false; });
