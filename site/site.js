@@ -44,6 +44,27 @@
     var g = function (id) { var el = $(id); return el ? el.value.trim() : ''; };
     var svcLabel = function () { var o = svc.selectedOptions && svc.selectedOptions[0]; return o ? o.textContent : g('f-service'); };
     var fmtDate = function (v) { if (!v) return ''; var d = new Date(v + 'T12:00:00'); return isNaN(d) ? v : d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); };
+    // chef fee estimate from the selected tier: base covers data-incl guests, + data-extra each up to data-cap; extra hands from data-helpfrom
+    var estimate = function () {
+      var o = svc && svc.selectedOptions && svc.selectedOptions[0]; if (!o) return null;
+      var base = +o.getAttribute('data-base') || 0, guests = Math.round(+g('f-guests') || 0), pair = $('pairWrap') && !$('pairWrap').hidden ? g('f-pairing') : '';
+      if (!base && !pair) return null;
+      if (!base) { var m = /\$([0-9,]+)\s*$/.exec(o.value); base = m ? +m[1].replace(/,/g, '') : 0; }
+      var total = base, over = false, cap = +o.getAttribute('data-cap') || 0, incl = +o.getAttribute('data-incl') || 0;
+      if (incl && guests) {
+        var gg = cap && guests > cap ? cap : guests; over = !!(cap && guests > cap);
+        total += Math.max(0, gg - incl) * (+o.getAttribute('data-extra') || 0);
+        var hf = +o.getAttribute('data-helpfrom') || 0; if (hf && gg >= hf) total += +o.getAttribute('data-help') || 0;
+      }
+      if (/each course/.test(pair)) total += 20 * (+o.getAttribute('data-courses') || 4);
+      else if (pair) total += 40;
+      return { total: total, over: over, cap: cap };
+    };
+    var showEst = function () {
+      var el = $('estNote'); if (!el) return; var e = estimate();
+      el.hidden = !e; if (!e) return;
+      el.textContent = e.over ? 'That\'s more guests than this service seats (up to ' + e.cap + '). Send the request and I\'ll put together a custom quote.' : 'Estimated chef fee' + (g('f-guests') ? ' for ' + g('f-guests') + ' guests' : '') + ': $' + e.total.toLocaleString() + '. Groceries are billed separately at cost.';
+    };
     var build = function () {
       var lines = ['Hi Chef Blaise, I\'d like to request: ' + svcLabel() + '.'];
       if (g('f-name')) lines.push('Name: ' + g('f-name'));
@@ -51,6 +72,8 @@
       if (g('f-email')) lines.push('Email: ' + g('f-email'));
       if (g('f-date')) lines.push('Date: ' + fmtDate(g('f-date')));
       if (g('f-guests')) lines.push('Guests: ' + g('f-guests'));
+      if (g('f-pairing') && !$('pairWrap').hidden) lines.push('Wine pairing: ' + g('f-pairing'));
+      var est = estimate(); if (est) lines.push('Estimated chef fee: $' + est.total.toLocaleString() + ' (groceries billed separately)');
       if (g('f-city')) lines.push('City: ' + g('f-city'));
       var pt = +g('f-pretaste') || 0;
       if (pt) lines.push('Pre-tastings: ' + pt + ' (+$' + (pt * 50) + ')');
@@ -60,7 +83,7 @@
       return lines.join('\n');
     };
     var refresh = function () {
-      var t = build();
+      var t = build(); showEst();
       if (msg) msg.textContent = t;
       if (sms) sms.href = 'sms:+16317101226?&body=' + encodeURIComponent(t);
       if (mail) mail.href = 'mailto:blaiseculinarycreations@gmail.com?subject=' + encodeURIComponent('Booking request') + '&body=' + encodeURIComponent(t);
@@ -77,12 +100,15 @@
     };
     form.addEventListener('change', callToggle); callToggle();
     var adultToggle = function () {
-      var o = svc && svc.selectedOptions && svc.selectedOptions[0]; var need = !!(o && o.getAttribute('data-adult'));
+      var o = svc && svc.selectedOptions && svc.selectedOptions[0];
+      var pw = $('pairWrap'), canPair = !!(o && o.getAttribute('data-pair')); if (pw) { pw.hidden = !canPair; if (!canPair && $('f-pairing')) $('f-pairing').value = ''; }
+      var need = !!(o && (o.getAttribute('data-adult') || (canPair && g('f-pairing'))));
       var w = $('adultWrap'); if (w) w.hidden = !need;
       var dw = $('depWrap'); if (dw) dw.hidden = !!(o && /\| Free$/.test(o.value));
       return need;
     };
     if (svc) svc.addEventListener('change', adultToggle);
+    if ($('f-pairing')) $('f-pairing').addEventListener('change', adultToggle);
     // ---- date rules: no past dates, two weeks' notice for dinners, booked/blocked days ----
     var dateEl = $('f-date'), dateMsg = $('dateMsg'), depNote = $('depNote'), taken = {};
     var iso = function (d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
