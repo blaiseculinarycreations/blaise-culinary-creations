@@ -140,6 +140,25 @@
     };
     if (dateEl) dateEl.addEventListener('change', checkDate);
     if (svc) svc.addEventListener('change', checkDate);
+    // phone: format as you type, (404)-555-0123
+    var phoneEl = $('f-phone');
+    var fmtPhone = function (v) {
+      var d = String(v || '').replace(/\D/g, '');
+      d = d.replace(/^1/, ''); // US area codes never start with 1, so a leading 1 is the country code
+      d = d.slice(0, 10);
+      if (!d) return '';
+      if (d.length < 4) return '(' + d;
+      if (d.length < 7) return '(' + d.slice(0, 3) + ')-' + d.slice(3);
+      return '(' + d.slice(0, 3) + ')-' + d.slice(3, 6) + '-' + d.slice(6);
+    };
+    if (phoneEl) {
+      phoneEl.setAttribute('maxlength', '14');
+      phoneEl.addEventListener('input', function (e) {
+        if (e.inputType && /^delete/.test(e.inputType) && /[()\-]$/.test(phoneEl.value)) return;
+        var f = fmtPhone(phoneEl.value); if (f !== phoneEl.value) phoneEl.value = f;
+      });
+      phoneEl.addEventListener('blur', function () { phoneEl.value = fmtPhone(phoneEl.value); refresh(); });
+    }
     form.addEventListener('input', refresh);
     form.addEventListener('change', refresh);
     try { pick(new URLSearchParams(location.search).get('s'), false); } catch (e) {}
