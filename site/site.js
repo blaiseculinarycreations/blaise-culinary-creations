@@ -128,7 +128,7 @@
         var days = Math.round((new Date(v + 'T12:00:00') - new Date(iso(new Date()) + 'T12:00:00')) / 86400000);
         if (days < 1) { msg = 'Please pick a future date.'; bad = true; }
         else if (taken[v]) { msg = 'That date is already booked. Please pick another.'; bad = true; }
-        else if (o && o.getAttribute('data-dinner') && days < 14) msg = 'Dinners need about two weeks to plan. Send it anyway and I\'ll tell you if I can make it work.';
+        else if (o && o.getAttribute('data-dinner') && days < 14) msg = 'Two weeks\' notice is preferred for dinners. Send it anyway and I\'ll let you know if I can make it work.';
       }
       if (dateMsg) { dateMsg.textContent = msg; dateMsg.classList.toggle('bad', bad); }
       return !bad;
