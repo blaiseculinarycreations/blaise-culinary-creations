@@ -303,3 +303,11 @@ section.first-tight { border-top: 0; padding-block: 24px clamp(48px, 8vw, 88px);
 .area-list li { padding: .35rem 0; border-bottom: 1px solid rgba(127,127,127,.2); }
 #faq h2 { margin-bottom: .4rem; }
 #faq h3 { font-size: 1.15rem; line-height: 1.3; margin: 1.3rem 0 .35rem; font-family: inherit; font-weight: 600; }
+
+/* iPhone Safari: date inputs and selects keep a built-in min width and can push the page sideways */
+input[type="date"], input[type="time"], select { -webkit-appearance: none; appearance: none; min-width: 0; max-width: 100%; display: block; }
+input[type="date"], input[type="time"] { min-height: calc(1.4em + 26px); text-align: left; }
+input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(.8); }
+select { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23b8b9bd' stroke-width='1.5'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 34px; }
+html, body { overflow-x: clip; }
