@@ -44,6 +44,27 @@
     var g = function (id) { var el = $(id); return el ? el.value.trim() : ''; };
     var svcLabel = function () { var o = svc.selectedOptions && svc.selectedOptions[0]; return o ? o.textContent : g('f-service'); };
     var fmtDate = function (v) { if (!v) return ''; var d = new Date(v + 'T12:00:00'); return isNaN(d) ? v : d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); };
+    // chef fee estimate from the selected tier: base covers data-incl guests, + data-extra each up to data-cap; extra hands from data-helpfrom
+    var estimate = function () {
+      var o = svc && svc.selectedOptions && svc.selectedOptions[0]; if (!o) return null;
+      var base = +o.getAttribute('data-base') || 0, guests = parseInt(g('f-guests'), 10) || 0, pair = $('pairWrap') && !$('pairWrap').hidden ? g('f-pairing') : '';
+      if (!base && !pair) return null;
+      if (!base) { var m = /\$([0-9,]+)\s*$/.exec(o.value); base = m ? +m[1].replace(/,/g, '') : 0; }
+      var total = base, over = false, cap = +o.getAttribute('data-cap') || 0, incl = +o.getAttribute('data-incl') || 0;
+      if (incl && guests) {
+        var gg = cap && guests > cap ? cap : guests; over = !!(cap && guests > cap);
+        total += Math.max(0, gg - incl) * (+o.getAttribute('data-extra') || 0);
+        var hf = +o.getAttribute('data-helpfrom') || 0; if (hf && gg >= hf) total += +o.getAttribute('data-help') || 0;
+      }
+      if (/each course/.test(pair)) total += 20 * (+o.getAttribute('data-courses') || 4);
+      else if (pair) total += 40;
+      return { total: total, over: over, cap: cap };
+    };
+    var showEst = function () {
+      var el = $('estNote'); if (!el) return; var e = estimate();
+      el.hidden = !e; if (!e) return;
+      el.textContent = e.over ? 'That\'s more guests than this service seats (up to ' + e.cap + '). Send the request and I\'ll put together a custom quote.' : 'Estimated chef fee' + (g('f-guests') ? ' for ' + g('f-guests') + ' guests' : '') + ': $' + e.total.toLocaleString() + '. Groceries are billed separately at cost.';
+    };
     var build = function () {
       var lines = ['Hi Chef Blaise, I\'d like to request: ' + svcLabel() + '.'];
       if (g('f-name')) lines.push('Name: ' + g('f-name'));
@@ -51,6 +72,8 @@
       if (g('f-email')) lines.push('Email: ' + g('f-email'));
       if (g('f-date')) lines.push('Date: ' + fmtDate(g('f-date')));
       if (g('f-guests')) lines.push('Guests: ' + g('f-guests'));
+      if (g('f-pairing') && !$('pairWrap').hidden) lines.push('Wine pairing: ' + g('f-pairing'));
+      var est = estimate(); if (est) lines.push('Estimated chef fee: $' + est.total.toLocaleString() + ' (groceries billed separately)');
       if (g('f-city')) lines.push('City: ' + g('f-city'));
       var pt = +g('f-pretaste') || 0;
       if (pt) lines.push('Pre-tastings: ' + pt + ' (+$' + (pt * 50) + ')');
@@ -60,15 +83,16 @@
       return lines.join('\n');
     };
     var refresh = function () {
-      var t = build();
+      var t = build(); showEst();
       if (msg) msg.textContent = t;
-      if (sms) sms.href = 'sms:+16317101226?&body=' + encodeURIComponent(t);
+      // iPhone and iPad want '&body=', Android and others want '?body='
+      if (sms) sms.href = 'sms:+16317101226' + (/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) ? '&' : '?') + 'body=' + encodeURIComponent(t);
       if (mail) mail.href = 'mailto:blaiseculinarycreations@gmail.com?subject=' + encodeURIComponent('Booking request') + '&body=' + encodeURIComponent(t);
     };
     var pick = function (sid, scroll) {
       if (!svc || !sid) return;
       var o = svc.querySelector('option[data-s="' + sid + '"]');
-      if (o) { svc.value = o.value; refresh(); if (typeof adultToggle === 'function') adultToggle(); if (typeof checkDate === 'function') checkDate(); }
+      if (o) { svc.value = o.value; if (typeof fillGuests === 'function') fillGuests(); refresh(); if (typeof adultToggle === 'function') adultToggle(); if (typeof checkDate === 'function') checkDate(); }
       if (scroll) { form.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function () { svc.focus({ preventScroll: true }); }, 400); }
     };
     var callToggle = function () {
@@ -77,12 +101,24 @@
     };
     form.addEventListener('change', callToggle); callToggle();
     var adultToggle = function () {
-      var o = svc && svc.selectedOptions && svc.selectedOptions[0]; var need = !!(o && o.getAttribute('data-adult'));
+      var o = svc && svc.selectedOptions && svc.selectedOptions[0];
+      var pw = $('pairWrap'), canPair = !!(o && o.getAttribute('data-pair')); if (pw) { pw.hidden = !canPair; if (!canPair && $('f-pairing')) $('f-pairing').value = ''; }
+      var need = !!(o && (o.getAttribute('data-adult') || (canPair && g('f-pairing'))));
       var w = $('adultWrap'); if (w) w.hidden = !need;
       var dw = $('depWrap'); if (dw) dw.hidden = !!(o && /\| Free$/.test(o.value));
       return need;
     };
     if (svc) svc.addEventListener('change', adultToggle);
+    // guest count dropdown sized to the selected service (its cap, or 1-20)
+    var fillGuests = function () {
+      var gs = $('f-guests'); if (!gs || gs.tagName !== 'SELECT') return;
+      var o = svc && svc.selectedOptions && svc.selectedOptions[0], cap = o ? +o.getAttribute('data-cap') || 0 : 0, cur = gs.value, max = cap || 20, h = '<option value="">How many guests?</option>';
+      for (var i = 1; i <= max; i++) h += '<option value="' + i + '">' + i + (i === 1 ? ' guest' : ' guests') + '</option>';
+      h += '<option value="' + (max + 1) + '+">More than ' + max + (cap ? ' (custom quote)' : '') + '</option>';
+      gs.innerHTML = h; if (cur && gs.querySelector('option[value="' + cur + '"]')) gs.value = cur;
+    };
+    if (svc) svc.addEventListener('change', function () { fillGuests(); refresh(); });
+    if ($('f-pairing')) $('f-pairing').addEventListener('change', adultToggle);
     // ---- date rules: no past dates, two weeks' notice for dinners, booked/blocked days ----
     var dateEl = $('f-date'), dateMsg = $('dateMsg'), depNote = $('depNote'), taken = {};
     var iso = function (d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
@@ -93,7 +129,7 @@
     var checkDate = function () {
       var o = selOpt(), v = dateEl ? dateEl.value : '', msg = '', bad = false;
       var dep = o ? +o.getAttribute('data-dep') || 0 : 0;
-      if (depNote) depNote.textContent = dep ? 'This service takes a ' + dep + '% deposit to hold the date (refundable in full up to 14 days before). The balance and a grocery estimate are due 4 days before.' : '';
+      if (depNote) depNote.textContent = dep ? 'This service takes a ' + dep + '% deposit to hold the date (fully refundable 14 or more days before, half at 7 to 13 days; you can also reschedule). The balance and a grocery estimate are due 4 days before.' : '';
       if (v) {
         var days = Math.round((new Date(v + 'T12:00:00') - new Date(iso(new Date()) + 'T12:00:00')) / 86400000);
         if (days < 1) { msg = 'Please pick a future date.'; bad = true; }
@@ -105,10 +141,38 @@
     };
     if (dateEl) dateEl.addEventListener('change', checkDate);
     if (svc) svc.addEventListener('change', checkDate);
+    // phone: format as you type, (404) 555-0123
+    var phoneEl = $('f-phone');
+    var fmtPhone = function (v) {
+      var d = String(v || '').replace(/\D/g, '');
+      d = d.replace(/^1/, ''); // US area codes never start with 1, so a leading 1 is the country code
+      d = d.slice(0, 10);
+      if (!d) return '';
+      if (d.length < 4) return '(' + d;
+      if (d.length < 7) return '(' + d.slice(0, 3) + ') ' + d.slice(3);
+      return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+    };
+    if (phoneEl) {
+      phoneEl.setAttribute('maxlength', '14');
+      phoneEl.addEventListener('input', function (e) {
+        if (e.inputType && /^delete/.test(e.inputType) && /[() \-]$/.test(phoneEl.value)) return;
+        var f = fmtPhone(phoneEl.value); if (f !== phoneEl.value) phoneEl.value = f;
+      });
+      phoneEl.addEventListener('blur', function () { phoneEl.value = fmtPhone(phoneEl.value); refresh(); });
+    }
     form.addEventListener('input', refresh);
     form.addEventListener('change', refresh);
     try { pick(new URLSearchParams(location.search).get('s'), false); } catch (e) {}
-    adultToggle(); checkDate();
+    // Some phone browsers (inside Instagram, Gmail and similar apps) block text and email links.
+    // Copy the message on tap too, so the visitor can always paste it.
+    [[sms, 'text it to (631) 710-1226'], [mail, 'email it to blaiseculinarycreations@gmail.com']].forEach(function (pair) {
+      var a = pair[0]; if (!a) return;
+      a.addEventListener('click', function () {
+        var t = build();
+        try { if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { if (status) status.textContent = 'Your message is also copied. If the app didn\'t open, paste it and ' + pair[1] + '.'; }, function () {}); } catch (e) {}
+      });
+    });
+    fillGuests(); adultToggle(); checkDate();
     refresh();
     document.addEventListener('click', function (e) {
       var b = e.target.closest('[data-pick]'); if (b) pick(b.getAttribute('data-pick'), true);
@@ -125,7 +189,7 @@
       sendBtn.disabled = true; status.textContent = 'Sending…';
       post(form).then(function () {
         status.textContent = 'Thank you! Your request was sent. I\'ll be in touch within a day.';
-        form.reset(); callToggle(); adultToggle(); checkDate(); refresh();
+        form.reset(); fillGuests(); callToggle(); adultToggle(); checkDate(); refresh();
       }).catch(function () {
         copy(build(), msg, 'That didn\'t go through, so I copied your message. Text it to (631) 710-1226 or email blaiseculinarycreations@gmail.com.', status);
       }).then(function () { sendBtn.disabled = false; });

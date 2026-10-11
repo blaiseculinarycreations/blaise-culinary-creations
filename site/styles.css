@@ -275,6 +275,10 @@ section.first-tight { border-top: 0; padding-block: 24px clamp(48px, 8vw, 88px);
 .pdep { font-size: .8rem; letter-spacing: .06em; color: var(--silver-hi); }
 .terms h2 { font-family: var(--display); font-weight: 500; font-size: var(--step-2); color: var(--silver-hi); margin: 36px 0 12px; }
 .terms p { margin: 0 0 12px; }
+.terms .terms-list { margin: 0 0 12px; padding: 0; list-style: none; display: grid; gap: 10px; max-width: 70ch; }
+.terms .terms-list li { padding-left: 18px; position: relative; }
+.terms .terms-list li::before { content: ""; position: absolute; left: 0; top: .78em; width: 8px; height: 1px; background: var(--silver-lo); }
+.terms .terms-list strong { color: var(--silver-hi); font-weight: 500; }
 .terms .tbl { overflow-x: auto; margin-bottom: 12px; }
 .terms table { width: 100%; border-collapse: collapse; font-size: .9375rem; }
 .terms th { text-align: left; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--silver-lo); font-weight: 500; padding: 8px 10px; border-bottom: 1px solid var(--line); }
@@ -294,3 +298,8 @@ section.first-tight { border-top: 0; padding-block: 24px clamp(48px, 8vw, 88px);
 /* keep the name and Menu button on one row on small phones */
 @media (max-width: 430px) { .brand span { font-size: .8rem; letter-spacing: .05em; } .brand { gap: 8px; } .nav-toggle { padding: 8px 10px; } }
 @media (max-width: 380px) { .brand span { font-size: .7rem; letter-spacing: .03em; } .brand svg { width: 24px; height: 24px; } header.top .wrap { gap: 8px; } }
+/* service areas */
+.area-list { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: .4rem 1rem; }
+.area-list li { padding: .35rem 0; border-bottom: 1px solid rgba(127,127,127,.2); }
+#faq h2 { margin-bottom: .4rem; }
+#faq h3 { font-size: 1.15rem; line-height: 1.3; margin: 1.3rem 0 .35rem; font-family: inherit; font-weight: 600; }

@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /pro/
+
+Sitemap: https://blaiseculinarycreations.com/sitemap.xml
