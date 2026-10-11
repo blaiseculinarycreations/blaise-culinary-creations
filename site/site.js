@@ -60,11 +60,6 @@
       else if (pair) total += 40;
       return { total: total, over: over, cap: cap };
     };
-    var showEst = function () {
-      var el = $('estNote'); if (!el) return; var e = estimate();
-      el.hidden = !e; if (!e) return;
-      el.textContent = e.over ? 'That\'s more guests than this service seats (up to ' + e.cap + '). Send the request and I\'ll put together a custom quote.' : 'Estimated chef fee' + (g('f-guests') ? ' for ' + g('f-guests') + ' guests' : '') + ': $' + e.total.toLocaleString() + '. Groceries are billed separately at cost.';
-    };
     var build = function () {
       var lines = ['Hi Chef Blaise, I\'d like to request: ' + svcLabel() + '.'];
       if (g('f-name')) lines.push('Name: ' + g('f-name'));
@@ -73,7 +68,6 @@
       if (g('f-date')) lines.push('Date: ' + fmtDate(g('f-date')));
       if (g('f-guests')) lines.push('Guests: ' + g('f-guests'));
       if (g('f-pairing') && !$('pairWrap').hidden) lines.push('Wine pairing: ' + g('f-pairing'));
-      var est = estimate(); if (est) lines.push('Estimated chef fee: $' + est.total.toLocaleString() + ' (groceries billed separately)');
       if (g('f-city')) lines.push('City: ' + g('f-city'));
       var pt = +g('f-pretaste') || 0;
       if (pt) lines.push('Pre-tastings: ' + pt + ' (+$' + (pt * 50) + ')');
@@ -83,7 +77,7 @@
       return lines.join('\n');
     };
     var refresh = function () {
-      var t = build(); showEst();
+      var t = build();
       if (msg) msg.textContent = t;
       // iPhone and iPad want '&body=', Android and others want '?body='
       if (sms) sms.href = 'sms:+16317101226' + (/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) ? '&' : '?') + 'body=' + encodeURIComponent(t);
@@ -129,7 +123,7 @@
     var checkDate = function () {
       var o = selOpt(), v = dateEl ? dateEl.value : '', msg = '', bad = false;
       var dep = o ? +o.getAttribute('data-dep') || 0 : 0;
-      if (depNote) depNote.textContent = dep ? 'This service takes a ' + dep + '% deposit to hold the date (fully refundable 14 or more days before, half at 7 to 13 days; you can also reschedule). The balance and a grocery estimate are due 4 days before.' : '';
+      if (depNote) depNote.textContent = dep ? 'This service takes a ' + dep + '% deposit to hold your date.' : '';
       if (v) {
         var days = Math.round((new Date(v + 'T12:00:00') - new Date(iso(new Date()) + 'T12:00:00')) / 86400000);
         if (days < 1) { msg = 'Please pick a future date.'; bad = true; }
