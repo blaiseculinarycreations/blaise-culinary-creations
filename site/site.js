@@ -23,7 +23,7 @@
   }
   function copy(text, el, okMsg, target) {
     var done = function () { target.textContent = okMsg; };
-    var fail = function () { selectText(el); target.textContent = 'Text selected. Press Copy to save it.'; };
+    var fail = function () { if (el) selectText(el); target.textContent = 'Text selected. Press Copy to save it.'; };
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fail);
       else fail();
